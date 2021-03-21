@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Media Player App</string>
+    <string name="error_media_not_found">Không tìm thấy media</string>
+    <string name="generic_error">Lỗi chung chung</string>
+    <string name="notification_channel">Đang chạy</string>
+    <string name="notification_channel_description">Hiển thị nhạc gì đang được phát</string>
+    <string name="chartCollection">Bảng xếp hạng</string>
+</resources>

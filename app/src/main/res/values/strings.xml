@@ -1,3 +1,8 @@
 <resources>
-    <string name="app_name">MediaPlayerApp</string>
+    <string name="app_name">Media Player App</string>
+    <string name="generic_error">Some generic error</string>
+    <string name="error_media_not_found">Media not found</string>
+    <string name="notification_channel">Now Playing</string>
+    <string name="notification_channel_description">Shows what music is currently playing</string>
+    <string name="chartCollection">Chart Tracks</string>
 </resources>

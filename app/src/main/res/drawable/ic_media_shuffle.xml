@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+<!--    <item android:state_pressed="true"-->
+<!--        android:drawable="@drawable/ic_shuffle_click" /> &lt;!&ndash; pressed &ndash;&gt;-->
+    <item android:state_checked="true"
+        android:drawable="@drawable/ic_shuffle_click" /> <!-- pressed -->
+    <item android:state_focused="true"
+        android:drawable="@drawable/ic_shuffle_click" /> <!-- focused -->
+    <item android:state_hovered="true"
+        android:drawable="@drawable/ic_shuffle_click" /> <!-- hovered -->
+    <item android:drawable="@drawable/ic_shuffle" /> <!-- default -->
+</selector>

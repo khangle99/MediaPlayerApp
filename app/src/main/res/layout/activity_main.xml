@@ -1,18 +1,198 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    xmlns:tools="http://schemas.android.com/tools">
+    <data>
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Hello World!"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        <variable
+            name="track"
+            type="com.khangle.mediaplayerapp.data.model.Track" />
+        <variable
+            name="target"
+            type="com.squareup.picasso.Target" />
+    </data>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <androidx.constraintlayout.motion.widget.MotionLayout
+        android:id="@+id/container"
+        android:background="@color/black"
+        app:layoutDescription="@xml/bottomnav_collapse_scene"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingTop="0dp">
+
+        <androidx.coordinatorlayout.widget.CoordinatorLayout
+            android:id="@+id/mainApp"
+            android:layout_width="0dp"
+            android:layout_height="0dp">
+
+            <LinearLayout
+                android:id="@+id/mainlayout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                app:layout_anchorGravity="bottom"
+                app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+                <fragment
+                    android:id="@+id/nav_host_fragment"
+                    android:tag="nav_host_fragment"
+                    android:name="androidx.navigation.fragment.NavHostFragment"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    app:defaultNavHost="true"
+                    app:layout_constraintBottom_toTopOf="@id/nav_view"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    />
+            </LinearLayout>
+
+            <androidx.constraintlayout.motion.widget.MotionLayout
+                android:id="@+id/motionLay"
+                android:visibility="gone"
+                app:bkg_blur_url="@{track.album.smalIconUrl}"
+                app:target="@{target}"
+                android:clickable="true"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/white"
+                android:clipToPadding="true"
+                app:behavior_hideable="false"
+                app:behavior_peekHeight="60dp"
+                app:layoutDescription="@xml/collapse_scene"
+                app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
+                <View
+                    android:id="@+id/bkg_view"
+                    android:background="@drawable/bkg_black_gradient"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"/>
+                <View
+                    android:id="@+id/bkg_view2"
+                    android:background="@color/black"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"/>
+                <com.google.android.material.progressindicator.LinearProgressIndicator
+                    android:id="@+id/progressBar"
+                    android:layout_width="8dp"
+                    android:layout_height="8dp"
+                    android:max="30000"
+                    app:trackColor="@color/grey"
+                    app:indicatorColor="@color/exo_white"
+                    android:progressTint="@color/exo_white" />
+
+                <ImageView
+                    android:id="@+id/artwork"
+                    android:scaleType="fitXY"
+                    app:image_url="@{track.album.coverUrl}"
+                    android:layout_width="30dp"
+                    android:layout_height="50dp" />
+
+                <TextView
+                    android:id="@+id/trackName"
+                    android:layout_width="200dp"
+                    android:textColor="@color/white"
+                    app:track="@{track}"
+                    android:textAlignment="textStart"
+                    android:layout_height="50dp" />
+
+                <android.widget.TextView
+                    android:id="@+id/trackNameBig"
+                    android:layout_width="200dp"
+                    android:textAlignment="center"
+                    android:textColor="@color/white"
+                    android:background="@drawable/bkg_textview"
+                    android:gravity="center"
+                    android:padding="@dimen/exo_error_message_text_padding_horizontal"
+                    app:track="@{track}"
+                    android:textSize="20sp"
+                    android:text="Track name \n track artist"
+                    android:layout_height="50dp" />
+
+                <com.khangle.mediaplayerapp.customview.PlayButton
+                    android:id="@+id/button"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    app:lottie_rawRes="@raw/new_lottie_play"
+                    app:lottie_loop="false"
+                    app:lottie_autoPlay="false"
+                    tools:layout_editor_absoluteX="327dp"
+                    tools:layout_editor_absoluteY="0dp" />
+
+                <SeekBar
+                    android:id="@+id/trackSeek"
+                    android:layout_width="match_parent"
+                    android:progress="30"
+                    android:thumbTint="@color/white"
+                    android:progressTint="@color/exo_white"
+                    android:foregroundTint="@color/exo_white"
+                    android:progressBackgroundTint="@color/exo_white"
+                    android:max="30000"
+                    android:layout_height="8dp" />
+
+                <TextView
+                    android:id="@+id/current"
+                    android:layout_width="8dp"
+                    android:layout_height="8dp"
+                    android:textColor="@color/white"
+                    android:text="0:0" />
+
+                <TextView
+                    android:id="@+id/trackTime"
+                    android:layout_width="8dp"
+                    android:layout_height="8dp"
+                    android:textColor="@color/white"
+                    android:text="0:30" />
+
+                <android.widget.Button
+                    android:id="@+id/next"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:background="@drawable/ic_media_next"/>
+
+                <android.widget.Button
+                    android:id="@+id/previ"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:background="@drawable/ic_media_previous"
+                    tools:layout_editor_absoluteX="327dp"
+                    tools:layout_editor_absoluteY="0dp" />
+
+                <android.widget.ToggleButton
+                    android:id="@+id/shuffle"
+                    android:layout_width="20dp"
+                    android:textOn=""
+                    android:textOff=""
+                    android:layout_height="20dp"
+                    android:background="@drawable/ic_media_shuffle"
+                    tools:layout_editor_absoluteX="327dp"
+                    tools:layout_editor_absoluteY="0dp" />
+
+                <com.khangle.mediaplayerapp.customview.RepeatButton
+                    android:id="@+id/repeat"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    app:repeat_state="off"
+                    app:src_repeat_all="@drawable/ic_repeat_all"
+                    app:src_repeat_off="@drawable/ic_repeat_off"
+                    app:src_repeat_one="@drawable/ic_repeat"
+                   />
+
+            </androidx.constraintlayout.motion.widget.MotionLayout>
+
+
+        </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+        <com.google.android.material.bottomnavigation.BottomNavigationView
+            android:id="@+id/nav_view"
+            android:visibility="gone"
+            app:layout_behavior="com.google.android.material.behavior.HideBottomViewOnScrollBehavior"
+            android:background="?android:attr/windowBackground"
+            android:layout_width="match_parent"
+            app:labelVisibilityMode="unlabeled"
+            app:itemTextColor="@color/botnav_bkg"
+            app:itemIconTint="@color/botnav_bkg"
+            android:layout_height="wrap_content"
+            app:menu="@menu/bottom_nav_menu" />
+
+    </androidx.constraintlayout.motion.widget.MotionLayout>
+</layout>
