@@ -2,6 +2,7 @@ package com.khangle.mediaplayerapp.di
 
 import android.content.ComponentName
 import android.content.Context
+import com.khangle.mediaplayerapp.data.network.okhttp.NetworkConnectionInterceptor
 import com.khangle.mediaplayerapp.data.network.retrofit.BaseWebservice
 import com.khangle.mediaplayerapp.data.network.retrofit.DeezerService
 import com.khangle.mediaplayerapp.media.MusicService
@@ -11,8 +12,10 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
 
 @Module
@@ -21,13 +24,17 @@ object ApplicationModule {
 
     @Provides
     @Singleton
-    fun provideDeezerService(): BaseWebservice {
-        return Retrofit.Builder().
-        baseUrl("https://api.deezer.com")
-                .addConverterFactory(GsonConverterFactory.create())
-                .build().create(DeezerService::class.java)
+    fun provideDeezerService(@ApplicationContext context: Context): BaseWebservice {
+        val okHttpClient =
+            OkHttpClient.Builder()
+                .addInterceptor(NetworkConnectionInterceptor(context))
+                .readTimeout(60, TimeUnit.SECONDS)
+                .connectTimeout(60, TimeUnit.SECONDS)
+        return Retrofit.Builder().baseUrl("https://api.deezer.com")
+            .addConverterFactory(GsonConverterFactory.create())
+            .client(okHttpClient.build())
+            .build().create(DeezerService::class.java)
     }
-
 
 
     @Provides

@@ -11,8 +11,7 @@ interface BaseWebservice {
 }
 
 interface DeezerService: BaseWebservice {
-    val chartURL: String
-        get() = "https://api.deezer.com/editorial/0/charts"
+
 
 
     @GET("/editorial/0/charts")

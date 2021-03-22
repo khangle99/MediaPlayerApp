@@ -24,7 +24,6 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.khangle.mediaplayerapp.customview.PlayButton
 import com.khangle.mediaplayerapp.customview.RepeatButton
 import com.khangle.mediaplayerapp.data.model.toTrack
-
 import com.khangle.mediaplayerapp.databinding.ActivityMainBinding
 import com.khangle.mediaplayerapp.media.RepeatMode
 import com.khangle.mediaplayerapp.media.Shuffle
@@ -79,6 +78,7 @@ class MainActivity : AppCompatActivity() {
         })
         mainActivityViewModel.state.observe(this, observer)
     }
+
 
     val observer = Observer<PlaybackStateCompat> {
         if (it.state == PlaybackStateCompat.STATE_PLAYING){

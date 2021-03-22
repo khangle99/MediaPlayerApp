@@ -88,6 +88,7 @@ class MusicService : MediaBrowserServiceCompat() {
             .apply {
                 setSessionActivity(sessionActivityPendingIntent)
                 isActive = true
+
             }
 
 //        stateBuilder = PlaybackStateCompat.Builder()
@@ -159,13 +160,13 @@ class MusicService : MediaBrowserServiceCompat() {
         exoPlayer.release()
     }
 
+
     override fun onLoadChildren(
         parentId: String,
         result: Result<MutableList<MediaBrowserCompat.MediaItem>>
     ) {
         deezerBrowserTree.getTracks(parentId, result)
         result.detach()
-
     }
 
     override fun onGetRoot(
@@ -198,6 +199,8 @@ class MusicService : MediaBrowserServiceCompat() {
 
 
     val callback = object : MediaSessionCompat.Callback() {
+
+
         override fun onPlayFromMediaId(mediaId: String?, extras: Bundle?) {
 
             super.onPlayFromMediaId(mediaId, extras)

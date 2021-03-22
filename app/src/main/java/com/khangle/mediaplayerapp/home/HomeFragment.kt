@@ -50,9 +50,16 @@ class HomeFragment : Fragment() {
         binding.tracksChart.layoutManager = LinearLayoutManager(requireContext())
         binding.tracksChart.adapter = chartTrackAdapter
         homeViewModel.chartTracks.observe(requireActivity(), Observer {
-            chartTrackAdapter.submitList(it)
-        })
+            if (it.size > 0) {
+                chartTrackAdapter.submitList(it)
+                binding.swipeRefresh.isRefreshing = false
+            }
 
+        })
+        binding.swipeRefresh.setOnRefreshListener {
+            homeViewModel.refresh()
+
+        }
     }
 
 }
