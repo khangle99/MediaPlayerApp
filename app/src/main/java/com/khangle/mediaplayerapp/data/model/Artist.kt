@@ -1,7 +1,11 @@
 package com.khangle.mediaplayerapp.data.model
 
+import android.os.Parcelable
+import androidx.recyclerview.widget.DiffUtil
 import com.google.gson.annotations.SerializedName
+import kotlinx.parcelize.Parcelize
 
+@Parcelize
  class Artist(
         val id: Long = -1,
         val name: String = "",
@@ -9,8 +13,23 @@ import com.google.gson.annotations.SerializedName
         val pictureUrl: String = "",
         @SerializedName("tracklist")
         val trackListUrl: String = ""
-)
+): Parcelable
+ val ArtistDiff = object : DiffUtil.ItemCallback<Artist>() {
+       override fun areItemsTheSame(oldItem: Artist, newItem: Artist): Boolean {
+             return oldItem.id == newItem.id
+       }
 
+       override fun areContentsTheSame(oldItem: Artist, newItem: Artist): Boolean {
+              return oldItem.id == newItem.id
+       }
+
+}
+
+data class ArtistListRespone(
+    val total: Int,
+    val data: List<Artist>,
+    val next: String = ""
+)
 /*
 * "artist": {
           "id": 5297745,

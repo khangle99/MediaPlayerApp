@@ -6,54 +6,61 @@
     <data>
         <variable
             name="track"
-            type="android.support.v4.media.MediaBrowserCompat.MediaItem" />
+            type="com.khangle.mediaplayerapp.data.model.Track" />
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:background="?attr/selectableItemBackground"
+    <com.facebook.shimmer.ShimmerFrameLayout
+        android:id="@+id/trackShimmer"
         android:layout_width="match_parent"
-        android:layout_height="80dp">
+        android:layout_height="wrap_content">
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:background="?attr/selectableItemBackground"
+            android:layout_width="match_parent"
+            android:layout_height="80dp">
 
-        <ImageView
-            android:id="@+id/imageView"
-            android:layout_width="68dp"
-            android:layout_height="63dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="9dp"
-            app:image_url = "@{track.description.mediaUri.toString()}"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/artist_name"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            <ImageView
+                android:id="@+id/imageView"
+                android:layout_width="68dp"
+                android:layout_height="63dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="9dp"
+                app:image_url = "@{track.album.smalIconUrl}"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/artist_name"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
-            android:id="@+id/artist_name"
-            android:layout_width="243dp"
-            android:layout_height="57dp"
-            android:layout_marginTop="8dp"
-            android:textColor="@color/white"
-            android:layout_marginBottom="15dp"
-            android:gravity="center_vertical"
-            android:textSize="14sp"
-            app:artist_name="@{track.description.subtitle.toString()}"
-            app:title="@{track.description.title.toString()}"
-            app:layout_constraintBottom_toBottomOf="@+id/imageView"
-            app:layout_constraintEnd_toStartOf="@+id/imageButton"
-            app:layout_constraintStart_toEndOf="@+id/imageView"
-            app:layout_constraintTop_toTopOf="@+id/imageView" />
+            <TextView
+                android:id="@+id/artist_name"
+                android:layout_width="243dp"
+                android:layout_height="57dp"
+                android:layout_marginTop="8dp"
+                android:textColor="@color/white"
+                android:layout_marginBottom="15dp"
+                android:gravity="center_vertical"
+                android:textSize="14sp"
+                app:subtitle="@{track.artist.name}"
+                app:title="@{track.title}"
+                app:layout_constraintBottom_toBottomOf="@+id/imageView"
+                app:layout_constraintEnd_toStartOf="@+id/imageButton"
+                app:layout_constraintStart_toEndOf="@+id/imageView"
+                app:layout_constraintTop_toTopOf="@+id/imageView" />
 
-        <android.widget.Button
-            android:id="@+id/imageButton"
-            android:layout_width="15dp"
-            android:layout_height="15dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginBottom="13dp"
-            app:layout_constraintBottom_toBottomOf="@+id/artist_name"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/artist_name"
-            app:layout_constraintTop_toTopOf="@+id/artist_name"
-            android:background="@drawable/ic_more" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            <android.widget.Button
+                android:id="@+id/imageButton"
+                android:layout_width="15dp"
+                android:layout_height="15dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="13dp"
+                app:layout_constraintBottom_toBottomOf="@+id/artist_name"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/artist_name"
+                app:layout_constraintTop_toTopOf="@+id/artist_name"
+                android:background="@drawable/ic_more" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </com.facebook.shimmer.ShimmerFrameLayout>
+
 </layout>

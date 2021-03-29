@@ -5,4 +5,13 @@
     <string name="notification_channel">Now Playing</string>
     <string name="notification_channel_description">Shows what music is currently playing</string>
     <string name="chartCollection">Chart Tracks</string>
+    <string name="discoveryLabel">Discovery</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="no_result">No result</string>
+    <string name="error">Error</string>
+    <string name="try_again">Try Again</string>
+    <string name="related_artist">Related Artist</string>
+    <string name="dicoverySearchHint">Tracks, Artists, Playlists</string>
+
 </resources>

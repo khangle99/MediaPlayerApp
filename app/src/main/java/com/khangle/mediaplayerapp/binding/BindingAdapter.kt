@@ -27,11 +27,11 @@ fun setImageUrlBlur(view: MotionLayout, path: String?, target: Target?) {
 
 }
 
-@BindingAdapter("artist_name", "title")
-fun setTrackItemArtist(view: TextView, artistName: String, title: String) {
+@BindingAdapter("subtitle", "title")
+fun setTrackItemArtist(view: TextView, subtitle: String?, title: String?) {
 
    view.text =  Html.fromHtml("<b>" + title + "</b>" +  "<br />" +
-           "<small>  <font color='grey'>" + artistName + "</font></small>")
+           "<small>  <font color='grey'>" + subtitle + "</font></small>")
 }
 
 @BindingAdapter("track")

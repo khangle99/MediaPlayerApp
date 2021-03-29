@@ -1,25 +1,31 @@
 package com.khangle.mediaplayerapp.data.model
 
+import android.os.Parcelable
 import android.support.v4.media.MediaBrowserCompat
 import android.support.v4.media.MediaDescriptionCompat
 import android.support.v4.media.MediaMetadataCompat
 import com.google.gson.annotations.SerializedName
 import com.khangle.mediaplayerapp.extension.*
+import kotlinx.parcelize.Parcelize
 import java.util.concurrent.TimeUnit
 
-class Track(
-    val id: Long = -1,
-    val readable: Boolean = false,
-    val title: String = "",
-    @SerializedName("title_short")
+@Parcelize
+ class Track(
+   val id: Long = -1,
+   val readable: Boolean = false,
+   val title: String = "",
+   @SerializedName("title_short")
     val titleShort: String = "",
-    val duration: Long = -1,
-    val preview: String = "",
-    val album: Album? = null,
-    val artist: Artist? = null
-
+   val duration: Long = -1,
+   val preview: String = "",
+   val album: Album? = null,
+   val artist: Artist? = null
+): Parcelable
+data class TrackListRespone(
+   val total: Int,
+   val data: List<Track>,
+   val next: String = ""
 )
-
 /*
 * {
         "id": 1140154392,

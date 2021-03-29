@@ -12,10 +12,10 @@
         tools:layout="@layout/fragment_home" />
 
     <keep_state_fragment
-        android:id="@+id/navigation_dashboard"
-        android:name="com.khangle.mediaplayerapp.dashboard.DashboardFragment"
+        android:id="@+id/navigation_discovery"
+        android:name="com.khangle.mediaplayerapp.discovery.DiscoveryFragment"
         android:label="dash"
-        tools:layout="@layout/fragment_dashboard" />
+        tools:layout="@layout/fragment_discovery" />
 
     <keep_state_fragment
         android:id="@+id/navigation_notifications"

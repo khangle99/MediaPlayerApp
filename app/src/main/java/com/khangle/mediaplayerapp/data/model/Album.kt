@@ -1,27 +1,34 @@
 package com.khangle.mediaplayerapp.data.model
 
+import android.os.Parcelable
+import androidx.recyclerview.widget.DiffUtil
 import com.google.gson.annotations.SerializedName
+import kotlinx.parcelize.Parcelize
 
- class Album(
-        val id: Long = -1,
-        val title: String = "",
-        @SerializedName("cover_small")
-        val smalIconUrl: String = "",
-        @SerializedName("cover_big")
-        val coverUrl: String = "",
-        @SerializedName("tracklist")
-        val tracklistUrl: String = ""
+@Parcelize
+class Album(
+    val id: Long = -1,
+    val title: String = "",
+    @SerializedName("cover_small")
+    val smalIconUrl: String = "",
+    @SerializedName("cover_big")
+    val coverUrl: String = "",
+    @SerializedName("tracklist")
+    val tracklistUrl: String = ""
+): Parcelable
+data class AlbumListRespone(
+    val total: Int,
+    val data: List<Album>,
+    val next: String = ""
 )
 
+val AlbumDiff = object : DiffUtil.ItemCallback<Album>() {
+    override fun areItemsTheSame(oldItem: Album, newItem: Album): Boolean {
+        return oldItem.id == newItem.id
+    }
 
-/*
-* "id": 185904782,
-          "title": "Alone",
-          "cover": "https://api.deezer.com/album/185904782/image",
-          "cover_small": "https://cdns-images.dzcdn.net/images/cover/5e161cdfae36fc472fedc395a6ac4ee9/56x56-000000-80-0-0.jpg",
-          "cover_medium": "https://cdns-images.dzcdn.net/images/cover/5e161cdfae36fc472fedc395a6ac4ee9/250x250-000000-80-0-0.jpg",
-          "cover_big": "https://cdns-images.dzcdn.net/images/cover/5e161cdfae36fc472fedc395a6ac4ee9/500x500-000000-80-0-0.jpg",
-          "cover_xl": "https://cdns-images.dzcdn.net/images/cover/5e161cdfae36fc472fedc395a6ac4ee9/1000x1000-000000-80-0-0.jpg",
-          "md5_image": "5e161cdfae36fc472fedc395a6ac4ee9",
-          "tracklist": "https://api.deezer.com/album/185904782/tracks",
-* */
+    override fun areContentsTheSame(oldItem: Album, newItem: Album): Boolean {
+        return oldItem.id == newItem.id
+    }
+
+}

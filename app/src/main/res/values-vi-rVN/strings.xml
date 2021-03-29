@@ -6,4 +6,5 @@
     <string name="notification_channel">Đang chạy</string>
     <string name="notification_channel_description">Hiển thị nhạc gì đang được phát</string>
     <string name="chartCollection">Bảng xếp hạng</string>
+    <string name="discoveryLabel">"Khám phá "</string>
 </resources>

@@ -22,35 +22,29 @@ import androidx.media.MediaBrowserServiceCompat
 import com.google.android.exoplayer2.*
 import com.google.android.exoplayer2.audio.AudioAttributes
 import com.google.android.exoplayer2.ext.mediasession.MediaSessionConnector
-import com.google.android.exoplayer2.source.ProgressiveMediaSource
 import com.google.android.exoplayer2.ui.PlayerNotificationManager
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory
 import com.google.android.exoplayer2.util.Util
 import com.khangle.mediaplayerapp.R
-import com.khangle.mediaplayerapp.data.repo.MusicServiceRepository
+import com.khangle.mediaplayerapp.data.model.Track
+import com.khangle.mediaplayerapp.data.model.from
 import com.khangle.mediaplayerapp.extension.*
-import com.khangle.mediaplayerapp.home.PLAYLISTID
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.launch
-import javax.inject.Inject
 
 @AndroidEntryPoint
 class MusicService : MediaBrowserServiceCompat() {
-    @Inject
-    lateinit var musicServiceRepository: MusicServiceRepository
 
     private var stateBuilder: PlaybackStateCompat.Builder? = null
     private lateinit var notificationManager: MediaNotificationManager
     protected lateinit var mediaSession: MediaSessionCompat
     private lateinit var currentPlayer: Player // su dung de tuong lai them feat cast player
     private lateinit var mediaSessionConnector: MediaSessionConnector
-    private var currentPlaylistItems: List<MediaMetadataCompat> = emptyList()
-    val deezerBrowserTree: DeezerBrowserTree by lazy {
-        DeezerBrowserTree(musicServiceRepository, serviceSope)
-    }
+    private var currentPlaylistItems: List<MediaMetadataCompat> =
+        emptyList() // list user chon khi pick 1 item cua no
+
     val serverJob = Job()
     val serviceSope = CoroutineScope(serverJob + Dispatchers.Main)
 
@@ -165,8 +159,8 @@ class MusicService : MediaBrowserServiceCompat() {
         parentId: String,
         result: Result<MutableList<MediaBrowserCompat.MediaItem>>
     ) {
-        deezerBrowserTree.getTracks(parentId, result)
-        result.detach()
+//        deezerBrowserTree.getTracks(parentId, result)
+//        result.detach()
     }
 
     override fun onGetRoot(
@@ -197,41 +191,71 @@ class MusicService : MediaBrowserServiceCompat() {
 
     }
 
+    val playbackStateBuilder = PlaybackStateCompat.Builder().setActions(
+        PlaybackStateCompat.ACTION_PLAY
+                or PlaybackStateCompat.ACTION_PLAY_PAUSE
+                or PlaybackStateCompat.ACTION_PREPARE_FROM_URI
+                or PlaybackStateCompat.ACTION_PREPARE_FROM_MEDIA_ID
+                or PlaybackStateCompat.ACTION_PLAY_FROM_URI
+    )
+    val handler = Handler(Looper.getMainLooper())
+    private fun updateCurrentPosition(duration: Long = 3000) {
+        val currentPosition: Long = currentPlayer.getCurrentPosition()
+        if (currentPosition >= 30000) { // do chua co ban quyen
+            //    mediaSession.setPlaybackState(playbackStateBuilder.setState(PlaybackStateCompat.STATE_PLAYING, 30000, 0f).build())
+            stopPlaybackStateUpdate()
+        } else {
+            handler.postDelayed({
+                val playbackState = playbackStateBuilder
+                    .setState(PlaybackStateCompat.STATE_PLAYING, currentPosition, 0f)
+                    .build()
+                mediaSession.setPlaybackState(playbackState)
+                updateCurrentPosition(duration);
+
+            }, 1000)
+
+        }
+
+    }
+
+    private fun stopPlaybackStateUpdate() {
+        handler.removeCallbacksAndMessages(null)
+    }
+
 
     val callback = object : MediaSessionCompat.Callback() {
 
-
+        val metadataBuilder = MediaMetadataCompat.Builder()
         override fun onPlayFromMediaId(mediaId: String?, extras: Bundle?) {
 
             super.onPlayFromMediaId(mediaId, extras)
             // truy van voi mediaId
             mediaId?.let {
-                serviceSope.launch {
-                    val playlistId = extras?.getString(PLAYLISTID)
-                    if (playlistId != null) {
 
-                        currentPlaylistItems = deezerBrowserTree.getCurrentPlaylist(playlistId)
-                        val find = currentPlaylistItems.find { it.id == mediaId }
-                        val windowsIndex = currentPlaylistItems.indexOf(find)
-                        val mediaSource = currentPlaylistItems.toMediaSource(dataSourceFactory)
-                        exoPlayer.setMediaSource(mediaSource)
-                        exoPlayer.prepare()
-                        exoPlayer.seekTo(windowsIndex, 0) // chay den item thu index vi tri
-                        exoPlayer.playWhenReady = true
-                        mediaSession.setMetadata(find)
-                        updateCurrentPosition(find!!.duration)
-                    } else {
-                        val track = musicServiceRepository.getTrack(it)
-                        val mediaSource = ProgressiveMediaSource.Factory(dataSourceFactory)
-                            .createMediaSource(MediaItem.fromUri(track.mediaUri))
-                        exoPlayer.playWhenReady = true
-                        exoPlayer.setMediaSource(mediaSource)
-                        exoPlayer.prepare()
-                        mediaSession.setMetadata(track)
-                        updateCurrentPosition(track.duration)
+                val isChangePlaylist = extras?.getBoolean(IS_CHANGE_PLAYLIST)!! // chac chan co
+                if (isChangePlaylist) { // get lai list metadata tu client
+
+                    currentPlaylistItems = extras.getParcelableArrayList<Track>("myKey")!!.map {
+                        metadataBuilder.from(it).build()
                     }
-
+                    val find = currentPlaylistItems.find { it.id == mediaId }
+                    val windowsIndex = currentPlaylistItems.indexOf(find)
+                    val mediaSource = currentPlaylistItems.toMediaSource(dataSourceFactory)
+                    exoPlayer.setMediaSource(mediaSource)
+                    exoPlayer.prepare()
+                    exoPlayer.seekTo(windowsIndex, 0) // chay den item thu index vi tri
+                    exoPlayer.playWhenReady = true
+                    mediaSession.setMetadata(find)
+                    updateCurrentPosition(find!!.duration)
+                } else { //
+                    val find = currentPlaylistItems.find { it.id == mediaId }
+                    val windowsIndex = currentPlaylistItems.indexOf(find)
+                    exoPlayer.seekTo(windowsIndex, 0) // chay den item thu index vi tri
+                    mediaSession.setMetadata(currentPlaylistItems[exoPlayer.currentWindowIndex]) // cap nhat lai mediasession
+                    //  updateCurrentPosition(track.duration)
                 }
+
+
                 //    registerReceiver(myNoisyAudioStreamReceiver, intentFilter)
             }
 
@@ -245,29 +269,7 @@ class MusicService : MediaBrowserServiceCompat() {
             updateCurrentPosition()
         }
 
-        val handler = Handler(Looper.getMainLooper())
-        private fun updateCurrentPosition(duration: Long = 3000) {
-            val currentPosition: Long = currentPlayer.getCurrentPosition()
-            if (currentPosition >= 30000) { // do chua co ban quyen
-                //    mediaSession.setPlaybackState(playbackStateBuilder.setState(PlaybackStateCompat.STATE_PLAYING, 30000, 0f).build())
-                stopPlaybackStateUpdate()
-            } else {
-                handler.postDelayed({
-                    val playbackState = playbackStateBuilder
-                        .setState(PlaybackStateCompat.STATE_PLAYING, currentPosition, 0f)
-                        .build()
-                    mediaSession.setPlaybackState(playbackState)
-                    updateCurrentPosition(duration);
 
-                }, 1000)
-
-            }
-
-        }
-
-        private fun stopPlaybackStateUpdate() {
-            handler.removeCallbacksAndMessages(null)
-        }
 
 
         override fun onSeekTo(pos: Long) {
@@ -325,23 +327,10 @@ class MusicService : MediaBrowserServiceCompat() {
 
         }
 
-        val playbackStateBuilder = PlaybackStateCompat.Builder().setActions(
-            PlaybackStateCompat.ACTION_PLAY
-                    or PlaybackStateCompat.ACTION_PLAY_PAUSE
-                    or PlaybackStateCompat.ACTION_PREPARE_FROM_URI
-                    or PlaybackStateCompat.ACTION_PREPARE_FROM_MEDIA_ID
-                    or PlaybackStateCompat.ACTION_PLAY_FROM_URI
-        )
+
 
         override fun onPlayFromUri(uri: Uri?, extras: Bundle?) {
             super.onPlayFromUri(uri, extras)
-//          val mediaSource = ProgressiveMediaSource.Factory(dataSourceFactory).createMediaSource(uri!!)
-//            exoPlayer.playWhenReady = true
-//            exoPlayer.setMediaSource(mediaSource)
-//            exoPlayer.prepare()
-//            mediaSession.setPlaybackState(playbackStateBuilder.setState(PlaybackStateCompat.STATE_PLAYING, 0,0f).build())
-//          val mediaMetadataCompat = extras?.getParcelable<MediaMetadataCompat>("metadata")
-//          mediaSession.setMetadata(mediaMetadataCompat)
         }
 
         override fun onStop() {
@@ -359,43 +348,15 @@ class MusicService : MediaBrowserServiceCompat() {
     }
 
 
-/*
-    private inner class MusicPlaybackPreparer : MediaSessionConnector.PlaybackPreparer {
-        override fun onCommand(player: Player, controlDispatcher: ControlDispatcher, command: String, extras: Bundle?, cb: ResultReceiver?): Boolean {
-          return false
-        }
-
-        override fun getSupportedPrepareActions(): Long {
-          return PlaybackStateCompat.ACTION_PREPARE_FROM_MEDIA_ID or
-                  PlaybackStateCompat.ACTION_PLAY_FROM_MEDIA_ID or
-                  PlaybackStateCompat.ACTION_PREPARE_FROM_SEARCH or
-                  PlaybackStateCompat.ACTION_PLAY_FROM_SEARCH or PlaybackStateCompat.ACTION_SKIP_TO_NEXT
-        }
-
-
-        override fun onPrepare(playWhenReady: Boolean) {
-            // load nhac recent
-        }
-
-        override fun onPrepareFromMediaId(mediaId: String, playWhenReady: Boolean, extras: Bundle?) {
-            serviceSope.launch {
-                val track = musicServiceRepository.getTrack(mediaId)
-                val mediaSource = ProgressiveMediaSource.Factory(dataSourceFactory).createMediaSource(MediaItem.fromUri(track.mediaUri))
-                exoPlayer.playWhenReady = true
-                exoPlayer.setMediaSource(mediaSource)
-                exoPlayer.prepare()
-            }
-        }
-
-        override fun onPrepareFromSearch(query: String, playWhenReady: Boolean, extras: Bundle?) {
-            // load nhac tu search
-        }
-
-        override fun onPrepareFromUri(uri: Uri, playWhenReady: Boolean, extras: Bundle?) = Unit
-
-    } */
 
     private inner class PlayerEventListener : Player.EventListener {
+
+        override fun onMediaItemTransition(mediaItem: MediaItem?, reason: Int) {
+            super.onMediaItemTransition(mediaItem, reason)
+            mediaSession.setMetadata(currentPlaylistItems[exoPlayer.currentWindowIndex])
+            updateCurrentPosition()
+
+        }
         override fun onPlayerStateChanged(playWhenReady: Boolean, playbackState: Int) {
             when (playbackState) {
                 Player.STATE_BUFFERING,

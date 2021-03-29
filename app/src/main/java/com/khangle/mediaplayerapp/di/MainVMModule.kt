@@ -1,7 +1,7 @@
 package com.khangle.mediaplayerapp.di
 
-import com.khangle.mediaplayerapp.data.repo.EditorialRepository
-import com.khangle.mediaplayerapp.data.repo.EditorialRepositoryImp
+import com.khangle.mediaplayerapp.data.repo.DeezerRepository
+import com.khangle.mediaplayerapp.data.repo.DeezerRepositoryImp
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -13,5 +13,5 @@ import dagger.hilt.android.scopes.ViewModelScoped
 interface MainVMModule {
     @Binds
     @ViewModelScoped
-    abstract fun bindChartRepo(editorialRepositoryImp: EditorialRepositoryImp): EditorialRepository
+    abstract fun bindChartRepo(deezerRepositoryImp: DeezerRepositoryImp): DeezerRepository
 }

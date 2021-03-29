@@ -1,12 +1,13 @@
 package com.khangle.mediaplayerapp
 
 import android.os.Bundle
-import android.support.v4.media.MediaBrowserCompat
 import android.support.v4.media.MediaMetadataCompat
 import android.support.v4.media.session.PlaybackStateCompat
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
+import com.khangle.mediaplayerapp.data.model.Track
+import com.khangle.mediaplayerapp.media.IS_CHANGE_PLAYLIST
 import com.khangle.mediaplayerapp.media.MusicServiceConnection
 import com.khangle.mediaplayerapp.media.NOTHING_PLAYING
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -24,7 +25,7 @@ class MainActivityViewModel @Inject constructor(val musicServiceConnection: Musi
     private var _state = MutableLiveData<PlaybackStateCompat>()
     var state = _state
 
-    private var currentPlaylist : List<MediaBrowserCompat.MediaItem>? = null // hien thi tren UI
+    private var currentPlaylist : List<Track>? = null // hien thi tren UI
 
 
     init {
@@ -47,13 +48,21 @@ class MainActivityViewModel @Inject constructor(val musicServiceConnection: Musi
     /**
      * playlist de hien cho UI, bundle de soan data cho backend
      */
-    fun play(track: MediaBrowserCompat.MediaItem, playlist: List<MediaBrowserCompat.MediaItem>, bundle: Bundle) {
+    fun play(trackId: String, playlist: List<Track>) {
         // chua co logic item nao dang click thi k lam gi, chi chay khi item moi dc click
+        val bundle = Bundle()
         if (musicServiceConnection.isConnected.value == true) {
-            currentPlaylist = playlist
+            // logic kiem tra list co doi thi them flag khong thi thoi
+                if (playlist.equals(currentPlaylist)) {
+                    bundle.putBoolean(IS_CHANGE_PLAYLIST, false)
+                } else {
+                    currentPlaylist = playlist
+                    bundle.putBoolean(IS_CHANGE_PLAYLIST, true)
+                    bundle.putParcelableArrayList("myKey",ArrayList(playlist)) // gui list len service
+                }
 
             musicServiceConnection.transportControls.playFromMediaId(
-                track.mediaId,
+                trackId,
                 bundle
             ) // gui xuong luon ca playlist de k can request lai
 
