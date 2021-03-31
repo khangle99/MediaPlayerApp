@@ -6,6 +6,7 @@ import android.support.v4.media.session.PlaybackStateCompat
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
+import com.khangle.mediaplayerapp.data.model.Genre
 import com.khangle.mediaplayerapp.data.model.Track
 import com.khangle.mediaplayerapp.media.IS_CHANGE_PLAYLIST
 import com.khangle.mediaplayerapp.media.MusicServiceConnection
@@ -16,6 +17,7 @@ import javax.inject.Inject
 @HiltViewModel
 class MainActivityViewModel @Inject constructor(val musicServiceConnection: MusicServiceConnection) :
     ViewModel() {
+    val genreList = mutableListOf<Genre>()
     val metadataBuilder = MediaMetadataCompat.Builder()
 
     // livedata cho UI

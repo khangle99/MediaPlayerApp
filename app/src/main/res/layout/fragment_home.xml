@@ -27,29 +27,67 @@
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:fitsSystemWindows="true"
-                    android:orientation="vertical">
+                    android:fitsSystemWindows="true">
+
                     <TextView
-                        android:id="@+id/chartHeader"
-                        android:layout_margin="50dp"
+                        android:id="@+id/chartAlbumsHeader"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:textSize="28sp"
-                        android:textAlignment="center"
+                        android:textColor="@color/white"
+                        android:text="Top 50 Tracks"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/chartGenre"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/chartAlbumsHeader" />
+
+                    <TextView
+                        android:id="@+id/newReleaseHeader"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="New Releases"
+                        android:textColor="@color/white"
+                        android:textSize="28sp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/chartGenre" />
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/newReleaseAlbums"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/newReleaseHeader" />
+                    <TextView
+                        android:id="@+id/SuggestionHeader"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="28sp"
                         android:gravity="center"
                         android:textColor="@color/white"
-                        android:text="@string/chartCollection"
+                        android:text="@string/suggestionCollection"
+                        app:layout_constraintTop_toBottomOf="@id/newReleaseAlbums"
                         app:layout_constraintRight_toRightOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"/>
+                      />
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/tracks_chart"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
+                        android:layout_height="wrap_content"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/chartHeader"
+                        app:layout_constraintTop_toBottomOf="@id/SuggestionHeader"
                         />
+
+
+
 
 
                 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -12,6 +12,11 @@ class GenreAdapter(val onItemClick: (Genre) -> Unit): ListAdapter<Genre, GenreAd
 
     class GenreItemViewholder(val binding: ItemGenreBinding, onItemClick: (Genre) -> Unit ): RecyclerView.ViewHolder(binding.root) {
         lateinit var genre: Genre
+        init {
+            binding.root.setOnClickListener {
+                onItemClick(genre)
+            }
+        }
         fun bind(genre: Genre) {
             this.genre = genre
             binding.genre = genre

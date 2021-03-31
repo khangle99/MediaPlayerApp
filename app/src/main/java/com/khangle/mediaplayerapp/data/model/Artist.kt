@@ -12,7 +12,9 @@ import kotlinx.parcelize.Parcelize
         @SerializedName("picture_medium")
         val pictureUrl: String = "",
         @SerializedName("tracklist")
-        val trackListUrl: String = ""
+        val trackListUrl: String = "",
+        @SerializedName("nb_album")
+        val albumCount: String = ""
 ): Parcelable
  val ArtistDiff = object : DiffUtil.ItemCallback<Artist>() {
        override fun areItemsTheSame(oldItem: Artist, newItem: Artist): Boolean {

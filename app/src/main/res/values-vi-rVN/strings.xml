@@ -5,6 +5,11 @@
     <string name="generic_error">Lỗi chung chung</string>
     <string name="notification_channel">Đang chạy</string>
     <string name="notification_channel_description">Hiển thị nhạc gì đang được phát</string>
-    <string name="chartCollection">Bảng xếp hạng</string>
     <string name="discoveryLabel">"Khám phá "</string>
+    <string name="suggestionCollection">Đề xuất</string>
+    <string name="no_result">Không có kết quả</string>
+    <string name="error">Có lỗi</string>
+    <string name="try_again">Thử Lại</string>
+    <string name="related_artist">Nghệ sĩ tương tự</string>
+    <string name="dicoverySearchHint">Tracks, Nghệ sĩ, Playlists</string>
 </resources>

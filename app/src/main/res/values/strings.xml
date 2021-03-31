@@ -4,7 +4,7 @@
     <string name="error_media_not_found">Media not found</string>
     <string name="notification_channel">Now Playing</string>
     <string name="notification_channel_description">Shows what music is currently playing</string>
-    <string name="chartCollection">Chart Tracks</string>
+    <string name="suggestionCollection">Suggestion Tracks</string>
     <string name="discoveryLabel">Discovery</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

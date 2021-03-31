@@ -14,7 +14,8 @@ class Album(
     @SerializedName("cover_big")
     val coverUrl: String = "",
     @SerializedName("tracklist")
-    val tracklistUrl: String = ""
+    val tracklistUrl: String = "",
+    val artist: Artist? = null
 ): Parcelable
 data class AlbumListRespone(
     val total: Int,

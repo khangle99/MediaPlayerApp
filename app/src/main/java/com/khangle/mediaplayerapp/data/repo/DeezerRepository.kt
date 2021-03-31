@@ -9,7 +9,7 @@ import javax.inject.Inject
 
 //return lai model, khong can lien quan network, thao tac du lieu voi track
 interface DeezerRepository {
-    suspend fun getChartsTracks(): List<Track> // do chi co 10 item cung nen k can phan trang ,
+    suspend fun getSuggestionTracks(): List<Track> // do chi co 10 item cung nen k can phan trang ,
     suspend fun getGenres(): List<Genre>
     fun querryTrack(querryText: String): TrackPagingSource // doi kieu return ve pager de phan trang
     fun querryArtist(querryText: String): ArtistPagingSource // doi kieu return ve pager de phan trang
@@ -18,6 +18,10 @@ interface DeezerRepository {
     suspend fun getRelateArtist(artistId: String): List<Artist> // lay cung 20 item artist
     fun querryAlbum(querryText: String): PlaylistPagingSource // doi kieu return ve pager de phan trang
     suspend fun getCompatPlaylistTracks(playlistId: String): List<Track>
+    suspend fun getNewReleaseAlbum(): List<Album>
+    suspend fun getChartTrack(genreId: Int): List<Track>
+    suspend fun getChartArtist(): List<Artist>
+    suspend fun getAlbumTracks(albumId: Int): List<Track>
 }
 
 private const val TAG = "EditorialRepository"
@@ -25,8 +29,8 @@ private const val TAG = "EditorialRepository"
 class DeezerRepositoryImp @Inject constructor(private val baseWebservice: BaseWebservice) :
     DeezerRepository {
 
-    override suspend fun getChartsTracks(): List<Track> {
-        return baseWebservice.getCharts().tracks.data
+    override suspend fun getSuggestionTracks(): List<Track> {
+        return baseWebservice.getSuggestion().tracks.data
     }
 
     override suspend fun getGenres(): List<Genre> {
@@ -55,6 +59,22 @@ class DeezerRepositoryImp @Inject constructor(private val baseWebservice: BaseWe
 
     override suspend fun getCompatPlaylistTracks(playlistId: String): List<Track> {
         return baseWebservice.playlistTrack(playlistId, 0).data
+    }
+
+    override suspend fun getNewReleaseAlbum(): List<Album> {
+        return baseWebservice.getNewRelease().data
+    }
+
+    override suspend fun getChartTrack(genreId: Int): List<Track> {
+        return baseWebservice.getChartTrack(genreId).data
+    }
+
+    override suspend fun getChartArtist(): List<Artist> {
+        return baseWebservice.getChartArtist().data
+    }
+
+    override suspend fun getAlbumTracks(albumId: Int): List<Track> {
+        return baseWebservice.getAlbumTracks(albumId).data
     }
 
 

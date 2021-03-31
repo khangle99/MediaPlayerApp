@@ -18,7 +18,7 @@ import java.util.concurrent.TimeUnit
     val titleShort: String = "",
    val duration: Long = -1,
    val preview: String = "",
-   val album: Album? = null,
+   var album: Album? = null,
    val artist: Artist? = null
 ): Parcelable
 data class TrackListRespone(
