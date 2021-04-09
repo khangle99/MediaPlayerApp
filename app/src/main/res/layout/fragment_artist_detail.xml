@@ -5,13 +5,27 @@
 
     <data>
     </data>
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/artistTrackList"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:context=".discovery.fragments.ArtistDetail.ArtistDetailFragment"/>
+       <FrameLayout
+           android:layout_width="match_parent"
+           android:layout_height="match_parent">
+
+           <androidx.recyclerview.widget.RecyclerView
+               android:id="@+id/artistTrackList"
+               android:layout_width="match_parent"
+               android:layout_height="match_parent"
+               app:layout_constraintBottom_toBottomOf="parent"
+               app:layout_constraintEnd_toEndOf="parent"
+               app:layout_constraintStart_toStartOf="parent"
+               app:layout_constraintTop_toTopOf="parent"
+               tools:context=".discovery.fragments.ArtistDetail.ArtistDetailFragment"/>
+           <ProgressBar
+               android:id="@+id/artistProgress"
+               android:indeterminate="true"
+               android:indeterminateTintMode="src_atop"
+               android:indeterminateTint="@color/main_color"
+               android:layout_gravity="center"
+               android:visibility="invisible"
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"/>
+       </FrameLayout>
 </layout>

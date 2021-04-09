@@ -44,6 +44,9 @@
         <action
             android:id="@+id/action_artistDetailFragment_self"
             app:destination="@id/artistDetailFragment" />
+        <action
+            android:id="@+id/action_artistDetailFragment_to_searchResultFragment"
+            app:destination="@id/searchResultFragment" />
     </fragment>
     <fragment
         android:id="@+id/playlistDetailFragment"
@@ -55,5 +58,8 @@
         <action
             android:id="@+id/action_playlistDetailFragment_self"
             app:destination="@id/playlistDetailFragment" />
+        <action
+            android:id="@+id/action_playlistDetailFragment_to_searchResultFragment"
+            app:destination="@id/searchResultFragment" />
     </fragment>
 </navigation>

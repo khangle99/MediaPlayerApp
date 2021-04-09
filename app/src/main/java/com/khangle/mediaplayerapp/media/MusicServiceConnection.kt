@@ -73,7 +73,6 @@ class MusicServiceConnection(context: Context, serviceComponent: ComponentName) 
     }
 
     fun setRepeat(mode: Int) {
-
         transportControls.setRepeatMode(mode)
     }
 

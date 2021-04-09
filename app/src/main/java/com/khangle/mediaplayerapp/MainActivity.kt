@@ -16,18 +16,20 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.motion.widget.MotionLayout
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.commit
 import androidx.lifecycle.Observer
 import androidx.navigation.findNavController
-import androidx.navigation.plusAssign
-import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.khangle.mediaplayerapp.customview.PlayButton
 import com.khangle.mediaplayerapp.customview.RepeatButton
 import com.khangle.mediaplayerapp.data.model.toTrack
 import com.khangle.mediaplayerapp.databinding.ActivityMainBinding
+import com.khangle.mediaplayerapp.discovery.DiscoveryFragment
+import com.khangle.mediaplayerapp.home.HomeFragment
+import com.khangle.mediaplayerapp.library.LibraryFragment
 import com.khangle.mediaplayerapp.media.RepeatMode
 import com.khangle.mediaplayerapp.media.Shuffle
-import com.khangle.mediaplayerapp.navigation.KeepStateNavigator
 import com.squareup.picasso.Picasso
 import com.squareup.picasso.Target
 import dagger.hilt.android.AndroidEntryPoint
@@ -41,24 +43,39 @@ class MainActivity : AppCompatActivity() {
     lateinit var motionLayout: MotionLayout
     lateinit var bottomMotionLayout: MotionLayout
 
+    private val homeFragment = HomeFragment()
+    private val discoveryFragment = DiscoveryFragment()
+    private val notificationFragment = LibraryFragment()
+
     @SuppressLint("RestrictedApi")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
         binding.setLifecycleOwner(this)
-        val navController = findNavController(R.id.nav_host_fragment)
-        val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment)!!
-        // setup custom navigator
-        val navigator = KeepStateNavigator(this, navHostFragment.childFragmentManager, R.id.nav_host_fragment)
-        navController.navigatorProvider += navigator
-        navController.setGraph(R.navigation.mobile_navigation)
-        binding.navView.setupWithNavController(navController)
-        // Passing each menu ID as a set of Ids because each
-        // menu should be considered as top level destinations.
-//        val appBarConfiguration = AppBarConfiguration(setOf(
-//                R.id.navigation_home, R.id.navigation_dashboard, R.id.navigation_notifications))
-//        setupActionBarWithNavController(navController, appBarConfiguration)
-        //  navView.setupWithNavController(navController)
+        binding.navView.setOnNavigationItemSelectedListener {
+            var fragment: Fragment? = null
+            when (it.itemId) {
+                R.id.navigation_home -> {
+                    fragment = homeFragment
+                }
+                R.id.navigation_discovery -> {
+
+                    fragment = discoveryFragment
+                }
+                R.id.navigation_notifications -> {
+                    fragment = notificationFragment
+                }
+                else -> {
+                }
+            }
+            supportFragmentManager.commit {
+                replace(R.id.nav_host_fragment, fragment!!, it.itemId.toString())
+                addToBackStack("")
+            }
+            true
+        }
+
         // kiem tra va doi lai state cho dung: chua lam
         motionLayout = binding.motionLay
         bottomMotionLayout = binding.container
@@ -77,21 +94,22 @@ class MainActivity : AppCompatActivity() {
             }
         })
         mainActivityViewModel.state.observe(this, observer)
+
+        binding.navView.selectedItemId = R.id.navigation_home // default chon
     }
 
-
     val observer = Observer<PlaybackStateCompat> {
-        if (it.state == PlaybackStateCompat.STATE_PLAYING){
+        if (it.state == PlaybackStateCompat.STATE_PLAYING) {
             binding.trackSeek.progress = it.position.toInt()
             binding.progressBar.progress = it.position.toInt()
-            val progress = (it.position /1000 ).toInt()
+            val progress = (it.position / 1000).toInt()
             val time = timeToString(progress)
             binding.current.text = time
             binding.button.isPlaying = true
         } else if (it.state != PlaybackStateCompat.STATE_NONE && it.state != PlaybackStateCompat.STATE_PLAYING) {
 
-        }  else {
-        //    Log.i(TAG, "ddd: none")
+        } else {
+            //    Log.i(TAG, "ddd: none")
         }
     }
 
@@ -138,11 +156,17 @@ class MainActivity : AppCompatActivity() {
             }
         }
         binding.repeat.setOnClickListener {
-           when ( (it as RepeatButton).state) {
-               RepeatMode.ALL.value -> { mainActivityViewModel.setRepeat(RepeatMode.ALL.value) }
-               RepeatMode.ONE.value -> { mainActivityViewModel.setRepeat(RepeatMode.ONE.value) }
-               RepeatMode.OFF.value -> { mainActivityViewModel.setRepeat(RepeatMode.OFF.value) }
-           }
+            when ((it as RepeatButton).state) {
+                RepeatMode.ALL.value -> {
+                    mainActivityViewModel.setRepeat(RepeatMode.ALL.value)
+                }
+                RepeatMode.ONE.value -> {
+                    mainActivityViewModel.setRepeat(RepeatMode.ONE.value)
+                }
+                RepeatMode.OFF.value -> {
+                    mainActivityViewModel.setRepeat(RepeatMode.OFF.value)
+                }
+            }
         }
 
         binding.next.setOnClickListener {
@@ -205,7 +229,10 @@ class MainActivity : AppCompatActivity() {
         })
     }
 
+    override fun onSupportNavigateUp(): Boolean {
 
+        return findNavController(R.id.nav_host_fragment).navigateUp()
+    }
 
     private var target = object : Target {
         override fun onPrepareLoad(placeHolderDrawable: Drawable?) {}
@@ -221,4 +248,6 @@ class MainActivity : AppCompatActivity() {
             }
         }
     }
+
+
 }

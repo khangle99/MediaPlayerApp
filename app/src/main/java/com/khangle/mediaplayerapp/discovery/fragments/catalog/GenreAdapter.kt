@@ -1,4 +1,4 @@
-package com.khangle.mediaplayerapp.recycleviewadapter
+package com.khangle.mediaplayerapp.discovery.fragments.catalog
 
 import android.view.LayoutInflater
 import android.view.ViewGroup

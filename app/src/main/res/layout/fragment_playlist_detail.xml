@@ -7,13 +7,22 @@
 
     </data>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/playlistTracks"
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:context=".discovery.fragments.PlaylistDetail.PlaylistDetailFragment">
-
-
-
-    </androidx.recyclerview.widget.RecyclerView>
+        android:layout_height="match_parent">
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/playlistTracks"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:context=".discovery.fragments.PlaylistDetail.PlaylistDetailFragment"/>
+        <ProgressBar
+            android:layout_gravity="center"
+            android:indeterminate="true"
+            android:indeterminateTintMode="src_atop"
+            android:indeterminateTint="@color/main_color"
+            android:id="@+id/playlistProgressbar"
+            android:visibility="invisible"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+    </FrameLayout>
 </layout>

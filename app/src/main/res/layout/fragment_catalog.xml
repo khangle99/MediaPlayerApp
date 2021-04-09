@@ -15,6 +15,15 @@
             android:id="@+id/genreRecyclerview"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
+        <ProgressBar
+            android:id="@+id/catalogProgress"
+            android:indeterminate="true"
+            android:indeterminateTintMode="src_atop"
+            android:indeterminateTint="@color/main_color"
+            android:layout_gravity="center"
+            android:visibility="invisible"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
 
     </FrameLayout>
 </layout>

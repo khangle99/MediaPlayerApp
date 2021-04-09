@@ -14,6 +14,15 @@
         android:layout_height="match_parent"
         android:fitsSystemWindows="true"
         tools:context=".home.HomeFragment">
+        <ProgressBar
+            android:id="@+id/homeProgress"
+            android:indeterminate="true"
+            android:indeterminateTintMode="src_atop"
+            android:indeterminateTint="@color/main_color"
+            android:layout_gravity="center"
+            android:visibility="invisible"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
         <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
             android:id="@+id/swipeRefresh"
             android:layout_width="match_parent"
@@ -33,17 +42,24 @@
                         android:id="@+id/chartAlbumsHeader"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                         android:layout_marginTop="25dp"
+                        android:layout_marginLeft="16dp"
+                        android:layout_marginBottom="16dp"
                         android:textSize="28sp"
                         android:textColor="@color/white"
-                        android:text="Top 50 Tracks"
+                        android:text="@string/top_10_tracks"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/chartGenre"
+                        android:layout_marginTop="16dp"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        tools:listitem="@layout/item_genre"
+                        tools:orientation="horizontal"
+                        tools:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/chartAlbumsHeader" />
@@ -52,8 +68,9 @@
                         android:id="@+id/newReleaseHeader"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="New Releases"
+                        android:text="@string/new_releases"
                         android:textColor="@color/white"
+                        android:layout_margin="16dp"
                         android:textSize="28sp"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
@@ -61,8 +78,12 @@
 
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/newReleaseAlbums"
+                        android:layout_marginTop="16dp"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        tools:listitem="@layout/item_album"
+                        tools:orientation="horizontal"
+                        tools:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/newReleaseHeader" />
                     <TextView
@@ -70,7 +91,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:textSize="28sp"
-                        android:gravity="center"
+                        android:layout_margin="16dp"
                         android:textColor="@color/white"
                         android:text="@string/suggestionCollection"
                         app:layout_constraintTop_toBottomOf="@id/newReleaseAlbums"
@@ -79,16 +100,14 @@
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/tracks_chart"
                         android:layout_width="match_parent"
+                        android:layout_marginTop="16dp"
                         android:layout_height="wrap_content"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
+                       tools:listitem="@layout/item_track"
                         app:layout_constraintTop_toBottomOf="@id/SuggestionHeader"
                         />
-
-
-
-
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </ScrollView>

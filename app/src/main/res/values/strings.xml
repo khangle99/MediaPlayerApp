@@ -13,5 +13,14 @@
     <string name="try_again">Try Again</string>
     <string name="related_artist">Related Artist</string>
     <string name="dicoverySearchHint">Tracks, Artists, Playlists</string>
+    <string name="new_releases">New Releases</string>
+    <string name="top_10_tracks">Top 10 Tracks</string>
+    <string name="title_activity_login">LoginActivity</string>
+    <!--
+    This string is used for square devices and overridden by hello_world in
+    values-round/strings.xml for round devices.
+    -->
+    <string name="hello_world">Hello Square World!</string>
+    <string name="title_activity_sign_in">SignInActivity</string>
 
 </resources>

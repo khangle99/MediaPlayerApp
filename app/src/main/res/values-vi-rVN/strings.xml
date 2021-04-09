@@ -12,4 +12,6 @@
     <string name="try_again">Thử Lại</string>
     <string name="related_artist">Nghệ sĩ tương tự</string>
     <string name="dicoverySearchHint">Tracks, Nghệ sĩ, Playlists</string>
+    <string name="new_releases">Mới phát hành</string>
+    <string name="top_10_tracks">Top 10 bài hát</string>
 </resources>

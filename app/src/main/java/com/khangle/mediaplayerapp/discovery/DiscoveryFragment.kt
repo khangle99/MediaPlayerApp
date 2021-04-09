@@ -9,18 +9,19 @@ import androidx.appcompat.widget.SearchView
 import androidx.core.content.ContextCompat.getSystemService
 import androidx.core.os.bundleOf
 import androidx.databinding.DataBindingUtil
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
+import com.khangle.mediaplayerapp.BaseFragment
 import com.khangle.mediaplayerapp.R
 import com.khangle.mediaplayerapp.databinding.FragmentDiscoveryBinding
 
 
-class DiscoveryFragment : Fragment() {
+class DiscoveryFragment : BaseFragment() {
+
     private lateinit var discoveryViewModel: DiscoveryViewmodel
     private lateinit var binding: FragmentDiscoveryBinding
-    private lateinit var navController: NavController
+    private lateinit var childNavController: NavController
     private val TAG = "DiscoveryFragment"
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -34,23 +35,34 @@ class DiscoveryFragment : Fragment() {
         return binding.root
     }
 
+    override fun refresh() {
+
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val navHostFragment =
             childFragmentManager.findFragmentById(R.id.nav_discovery_fragment) as NavHostFragment?
-        navController = navHostFragment?.navController!!
+        childNavController = navHostFragment?.navController!!
         binding.searchView.setOnQueryTextListener(object :
             SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 val bundle = bundleOf("querry" to query)
-                if (navController.currentDestination!!.id == R.id.searchResultFragment) {
-                    navController.navigate(R.id.action_searchResultFragment_self, bundle)
-                } else {
-                    navController.navigate(
-                        R.id.action_catalogFragment_to_searchResultFragment,
-                        bundle
-                    )
+                when (childNavController.currentDestination!!.id) {
+                    R.id.searchResultFragment -> {
+                        childNavController.navigate(R.id.action_searchResultFragment_self, bundle)
+                    }
+                    R.id.catalogFragment -> {
+                        childNavController.navigate(R.id.action_catalogFragment_to_searchResultFragment, bundle)
+                    }
+                    R.id.artistDetailFragment -> {
+                        childNavController.navigate(R.id.action_artistDetailFragment_to_searchResultFragment, bundle)
+                    }
+                    R.id.playlistDetailFragment -> {
+                        childNavController.navigate(R.id.action_playlistDetailFragment_to_searchResultFragment, bundle)
+                    }
                 }
+
                 hideSoftKeyboard(this@DiscoveryFragment.requireView())
                 return true
             }
@@ -73,4 +85,5 @@ class DiscoveryFragment : Fragment() {
             imm.hideSoftInputFromWindow(view.getWindowToken(), 0)
         }
     }
+
 }

@@ -5,27 +5,30 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.os.bundleOf
+import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.khangle.mediaplayerapp.BaseFragment
 import com.khangle.mediaplayerapp.MainActivityViewModel
 import com.khangle.mediaplayerapp.R
 import com.khangle.mediaplayerapp.chartDetail.ChartDetailDialogFragment
 import com.khangle.mediaplayerapp.databinding.FragmentHomeBinding
+import com.khangle.mediaplayerapp.discovery.fragments.catalog.GenreAdapter
 import com.khangle.mediaplayerapp.home.adapter.ChartAlbumAdapter
 import com.khangle.mediaplayerapp.newReleaseDetail.AlbumDetailFragment
-import com.khangle.mediaplayerapp.recycleviewadapter.GenreAdapter
 import com.khangle.mediaplayerapp.recycleviewadapter.TrackAdapter
 import dagger.hilt.android.AndroidEntryPoint
 
 
 @AndroidEntryPoint
-class HomeFragment : Fragment() {
+class HomeFragment : BaseFragment() {
+
     private val TAG = "HomeFragment"
     private val homeViewModel: HomeViewModel by viewModels()
     private val mainViewmodel: MainActivityViewModel by activityViewModels()
@@ -44,24 +47,36 @@ class HomeFragment : Fragment() {
         return binding.root
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
+    override fun refresh() {
         homeViewModel.refresh()
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        Log.i(TAG, "onViewCreated: call viewcreate")
         newReleaseAlbumAdapter = ChartAlbumAdapter {
             val albumDetailFragment = AlbumDetailFragment()
             albumDetailFragment.arguments = bundleOf("album" to it)
             albumDetailFragment.show(parentFragmentManager, "albumDetail")
         }
         binding.newReleaseAlbums.adapter = newReleaseAlbumAdapter
-        binding.newReleaseAlbums.layoutManager = LinearLayoutManager(requireContext(), RecyclerView.HORIZONTAL, false)
+        binding.newReleaseAlbums.layoutManager = LinearLayoutManager(
+            requireContext(),
+            RecyclerView.HORIZONTAL,
+            false
+        )
         chartGenreAdapter = GenreAdapter { genre ->
             val chartDetailDialogFragment = ChartDetailDialogFragment()
             val bundle = bundleOf("genre" to genre)
             chartDetailDialogFragment.arguments = bundle
-            chartDetailDialogFragment.show(parentFragmentManager,"chartDetail")
+            chartDetailDialogFragment.show(parentFragmentManager, "chartDetail")
         }
         binding.chartGenre.adapter = chartGenreAdapter
-        binding.chartGenre.layoutManager = LinearLayoutManager(requireContext(), RecyclerView.HORIZONTAL, false)
+        binding.chartGenre.layoutManager = LinearLayoutManager(
+            requireContext(),
+            RecyclerView.HORIZONTAL,
+            false
+        )
         suggestionTrackAdapter = TrackAdapter(onItemClick = { track ->
             Log.i(TAG, "onViewCreated: click")
             mainViewmodel.play(
@@ -87,9 +102,19 @@ class HomeFragment : Fragment() {
 
         binding.swipeRefresh.setOnRefreshListener {
             homeViewModel.refresh()
-
         }
+        homeViewModel.refresh()
+        homeViewModel.error.observe(viewLifecycleOwner, {
+            Toast.makeText(requireContext(), it, Toast.LENGTH_SHORT).show()
+        })
+
+        homeViewModel.isLoading.observe(viewLifecycleOwner, {
+            binding.homeProgress.isVisible = it
+        })
+
     }
+
+
 
 }
 

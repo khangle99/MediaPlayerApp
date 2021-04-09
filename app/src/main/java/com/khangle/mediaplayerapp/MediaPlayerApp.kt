@@ -1,10 +1,17 @@
 package com.khangle.mediaplayerapp
 
 import android.app.Application
+import android.content.Context
 import android.os.Build
 import androidx.annotation.RequiresApi
+import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.core.stringPreferencesKey
+import androidx.datastore.preferences.preferencesDataStore
 import dagger.hilt.android.HiltAndroidApp
 
+val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "settings")
+val CONNECTIVITY = stringPreferencesKey("connectivity")
 @HiltAndroidApp
 class MediaPlayerApp: Application() {
 
@@ -12,6 +19,7 @@ class MediaPlayerApp: Application() {
     @RequiresApi(Build.VERSION_CODES.M)
     override fun onCreate() {
         super.onCreate()
+
 //        val connectivityManager = getSystemService(ConnectivityManager::class.java)
 //        val request = NetworkRequest.Builder()
 //            .addCapability(NetworkCapabilities.NET_CAPABILITY_NOT_METERED)

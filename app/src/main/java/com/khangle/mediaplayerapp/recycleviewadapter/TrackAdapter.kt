@@ -15,6 +15,7 @@ import com.khangle.mediaplayerapp.databinding.ItemArtistFooterBinding
 import com.khangle.mediaplayerapp.databinding.ItemArtistHeaderBinding
 import com.khangle.mediaplayerapp.databinding.ItemPlaylistHeaderBinding
 import com.khangle.mediaplayerapp.databinding.ItemTrackBinding
+import com.khangle.mediaplayerapp.discovery.fragments.searchResult.artistSearchFragment.ArtistAdapter
 
 class TrackAdapter(val onItemClick: (Track) -> Unit) :
     ListAdapter<Track, TrackViewHolder>(TrackDiff) {
@@ -26,81 +27,6 @@ class TrackAdapter(val onItemClick: (Track) -> Unit) :
     override fun onBindViewHolder(holder: TrackViewHolder, position: Int) {
         val track = getItem(position) ?: Track()
         holder.bind(track)
-    }
-}
-
-class ArtistDetailAdapter(val artist: Artist, val artistAdapter: ArtistAdapter, val onItemClick: (Track) -> Unit) :
-    ListAdapter<Track, RecyclerView.ViewHolder>(TrackDiff) {
-    private val ITEM_TYPE = 0
-    private val HEADER_TYPE = 1
-    private val FOOTER_TYPE = 2
-    val viewPool = RecyclerView.RecycledViewPool()
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        return when (viewType) {
-            HEADER_TYPE -> ArtistHeaderViewHolder.create(parent, {}) // chua truyen bien onHeaderClick vao
-            FOOTER_TYPE -> ArtistFooterViewHolder.create(parent, onItemClick)
-            else -> TrackViewHolder.create(parent, onItemClick)
-        }
-    }
-
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        when (holder) {
-            is TrackViewHolder -> {
-                val track = getItem(position-1) ?: Track() // tru 1 vi co header
-                holder.bind(track)
-            }
-            is ArtistHeaderViewHolder -> {
-                holder.bind(artist)
-            }
-            is ArtistFooterViewHolder -> {
-                // setup recyclerview
-                holder.setupRecycler(artistAdapter,viewPool)
-            }
-        }
-
-
-    }
-
-    override fun getItemViewType(position: Int): Int {
-        return if (position == 0) {
-            HEADER_TYPE
-        } else if (position == currentList.size - 1) {
-            FOOTER_TYPE
-        } else {
-            ITEM_TYPE
-        }
-    }
-}
-
-class PlaylistDetailAdapter(val playlist: Playlist, val onItemClick: (Track) -> Unit) :
-    ListAdapter<Track, RecyclerView.ViewHolder>(TrackDiff) {
-    private val ITEM_TYPE = 0
-    private val HEADER_TYPE = 1
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        return when (viewType) {
-            HEADER_TYPE -> PlaylistHeaderViewHolder.create(parent, {}) // chua can su dung onHeaderClick vao
-            else -> TrackViewHolder.create(parent, onItemClick)
-        }
-    }
-
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        when (holder) {
-            is TrackViewHolder -> {
-                val track = getItem(position-1) ?: Track() // tru 1 vi co header
-                holder.bind(track)
-            }
-            is PlaylistHeaderViewHolder -> {
-                holder.bind(playlist)
-            }
-        }
-    }
-
-    override fun getItemViewType(position: Int): Int {
-        return if (position == 0) {
-            HEADER_TYPE
-        } else {
-            ITEM_TYPE
-        }
     }
 }
 

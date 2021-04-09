@@ -4,22 +4,22 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.khangle.mediaplayerapp.BaseFragment
 import com.khangle.mediaplayerapp.MainActivityViewModel
 import com.khangle.mediaplayerapp.R
 import com.khangle.mediaplayerapp.data.model.Playlist
+import com.khangle.mediaplayerapp.data.model.Resource
 import com.khangle.mediaplayerapp.databinding.FragmentPlaylistDetailBinding
-import com.khangle.mediaplayerapp.recycleviewadapter.PlaylistDetailAdapter
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class PlaylistDetailFragment : Fragment() {
-
+class PlaylistDetailFragment : BaseFragment() {
     private lateinit var binding: FragmentPlaylistDetailBinding
-    private val viewmodel: PlaylistDetailViewModel by viewModels()
+    private val playListDetailViewmodel: PlaylistDetailViewModel by viewModels()
     private val mainViewModel: MainActivityViewModel by viewModels()
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -44,11 +44,20 @@ class PlaylistDetailFragment : Fragment() {
             }
             binding.playlistTracks.adapter = adapter
         }
-        viewmodel.loadTrack(playlist.id.toString())
-        viewmodel.artistTrack.observe(viewLifecycleOwner, {
-            adapter.submitList(it)
+        playListDetailViewmodel.loadTrack(playlist.id.toString())
+        playListDetailViewmodel.artistTrack.observe(viewLifecycleOwner, {
+            when (it)
+            {
+                is Resource.Success -> { adapter.submitList(it.data) ; binding.playlistProgressbar.visibility = View.INVISIBLE }
+                is Resource.Loading -> { binding.playlistProgressbar.visibility = View.VISIBLE }
+                is Resource.Error -> {
+                    Toast.makeText(requireContext(),it.message, Toast.LENGTH_SHORT).show(); binding.playlistProgressbar.visibility = View.INVISIBLE }
+            }
         })
 
     }
 
+    override fun refresh() {
+        playListDetailViewmodel.loadTrack(playlist.id.toString())
+    }
 }

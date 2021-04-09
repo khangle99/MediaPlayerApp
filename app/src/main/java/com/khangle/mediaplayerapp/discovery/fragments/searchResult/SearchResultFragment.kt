@@ -21,7 +21,7 @@ import dagger.hilt.android.AndroidEntryPoint
 class SearchResultFragment : Fragment() {
 
     private lateinit var binding: FragmentSearchResultBinding
-    val viewmodel: SearchResultViewModel by viewModels()
+    val searchResultViewmodel: SearchResultViewModel by viewModels()
     private val mainViewModel: MainActivityViewModel by viewModels()
     lateinit var navController: NavController
     private lateinit var viewPagerAdapter: SearchTypeViewPagerAdapter
@@ -42,7 +42,7 @@ class SearchResultFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         navController = findNavController()
         val querry = arguments?.getString("querry")!!
-        viewmodel.searchQuerry.value = querry
+        searchResultViewmodel.searchQuerry.value = querry
         viewPager = binding.pager
         viewPagerAdapter = SearchTypeViewPagerAdapter(this)
         viewPager.adapter = viewPagerAdapter

@@ -21,7 +21,6 @@ interface BaseWebservice {
     suspend fun getChartTrack(genreId: Int): TrackListRespone
     suspend fun getChartArtist(): ArtistListRespone // nghe si chi can top all
     suspend fun getAlbumTracks(albumId: Int): TrackListRespone
-
 }
 
 interface DeezerService: BaseWebservice {

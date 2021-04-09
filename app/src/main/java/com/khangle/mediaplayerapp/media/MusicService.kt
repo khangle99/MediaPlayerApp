@@ -208,6 +208,7 @@ class MusicService : MediaBrowserServiceCompat() {
             handler.postDelayed({
                 val playbackState = playbackStateBuilder
                     .setState(PlaybackStateCompat.STATE_PLAYING, currentPosition, 0f)
+                    .setBufferedPosition(exoPlayer.contentBufferedPosition)
                     .build()
                 mediaSession.setPlaybackState(playbackState)
                 updateCurrentPosition(duration);

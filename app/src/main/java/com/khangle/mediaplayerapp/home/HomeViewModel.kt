@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.khangle.mediaplayerapp.data.model.Album
 import com.khangle.mediaplayerapp.data.model.Genre
 import com.khangle.mediaplayerapp.data.model.Track
+import com.khangle.mediaplayerapp.data.network.okhttp.NoConnectivityException
 import com.khangle.mediaplayerapp.data.repo.DeezerRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -22,21 +23,32 @@ class HomeViewModel @Inject constructor(val repository: DeezerRepository) : View
     private val _newReleaseAlbums = MutableLiveData<List<Album>>();
     val newReleaseAlbums: LiveData<List<Album>> = _newReleaseAlbums
 
-
-    private val TAG = "HomeViewModel"
+    private val _error = MutableLiveData<String>();
+    val error: LiveData<String> = _error
+    private val _isLoading = MutableLiveData<Boolean>();
+    val isLoading: LiveData<Boolean> = _isLoading
 
 
     fun refresh() {
         viewModelScope.launch(Dispatchers.IO) {
-            val newReleaseAlbum = repository.getNewReleaseAlbum()
-            _newReleaseAlbums.postValue(newReleaseAlbum)
-            val genres = repository.getGenres()
-            _genreList.postValue(genres)
+            try {
+                if (_newReleaseAlbums.value == null) {  _isLoading.postValue(true) }
+                val newReleaseAlbum = repository.getNewReleaseAlbum()
+                _newReleaseAlbums.postValue(newReleaseAlbum)
+                val genres = repository.getGenres()
+                _genreList.postValue(genres)
+                val chartsTracks = repository.getSuggestionTracks()
+                _suggestionTracks.postValue(chartsTracks)
+                _isLoading.postValue(false)
+            } catch (e: NoConnectivityException) {
+                _error.postValue(e.message)
+                _isLoading.postValue(false)
+            }
 
-            val chartsTracks = repository.getSuggestionTracks()
-            _suggestionTracks.postValue(chartsTracks)
         }
     }
+
+
 
 
 

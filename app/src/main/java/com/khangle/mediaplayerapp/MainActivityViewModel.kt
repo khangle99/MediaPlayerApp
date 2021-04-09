@@ -3,19 +3,24 @@ package com.khangle.mediaplayerapp
 import android.os.Bundle
 import android.support.v4.media.MediaMetadataCompat
 import android.support.v4.media.session.PlaybackStateCompat
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModel
+import android.util.Log
+import androidx.lifecycle.*
 import com.khangle.mediaplayerapp.data.model.Genre
 import com.khangle.mediaplayerapp.data.model.Track
+import com.khangle.mediaplayerapp.data.network.retrofit.DeezerAuthBaseService
 import com.khangle.mediaplayerapp.media.IS_CHANGE_PLAYLIST
 import com.khangle.mediaplayerapp.media.MusicServiceConnection
 import com.khangle.mediaplayerapp.media.NOTHING_PLAYING
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 import javax.inject.Inject
 
 @HiltViewModel
-class MainActivityViewModel @Inject constructor(val musicServiceConnection: MusicServiceConnection) :
+class MainActivityViewModel @Inject constructor(val musicServiceConnection: MusicServiceConnection,private val deezerAuthBaseService: DeezerAuthBaseService) :
     ViewModel() {
     val genreList = mutableListOf<Genre>()
     val metadataBuilder = MediaMetadataCompat.Builder()
@@ -35,6 +40,7 @@ class MainActivityViewModel @Inject constructor(val musicServiceConnection: Musi
         musicServiceConnection.also {
             playbackStateObserver = Observer<PlaybackStateCompat>{
                 _state.value = it
+                Log.i("bufferpo", ": ${it.bufferedPosition}")
             }
             metadataObserver = Observer<MediaMetadataCompat> {
                 _metadata.value = it
@@ -111,6 +117,36 @@ class MainActivityViewModel @Inject constructor(val musicServiceConnection: Musi
     }
     fun previous() {
         musicServiceConnection.previous()
+    }
+
+    private val _accessToken = MutableLiveData<String>()
+    val accessToken: LiveData<String> = _accessToken
+    fun getToken(code: String) {
+        viewModelScope.launch(Dispatchers.IO) {
+            Log.i("-----------", "getToken: -----------------")
+            val fetchAccessToken =
+                deezerAuthBaseService.fetchAccessToken("472082", "e928543dc74d7f29527e03a45f972a2f", code)
+            fetchAccessToken.enqueue(object : Callback<String> {
+                override fun onResponse(call: Call<String>, response: Response<String>) {
+
+                    val body = response.body()!!
+
+                    val expires = body.substringAfterLast("=")
+                    val accessToken = body.substringBeforeLast("&").substringAfter("=")
+                    _accessToken.postValue(accessToken)
+                    Log.i("-------ss----", "${accessToken}: -----------------")
+                }
+
+                override fun onFailure(call: Call<String>, t: Throwable) {
+                    val message = t.message
+                    Log.i("-----------", "fail: -----------------")
+                }
+
+            })
+            Log.i("-----------", "getToken2: -----------------")
+
+        }
+
     }
 
 

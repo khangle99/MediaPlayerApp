@@ -1,4 +1,4 @@
-package com.khangle.mediaplayerapp.recycleviewadapter
+package com.khangle.mediaplayerapp.discovery.fragments.searchResult.playlistSearchFragment
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -10,7 +10,7 @@ import com.khangle.mediaplayerapp.data.model.Playlist
 import com.khangle.mediaplayerapp.data.model.PlaylistDiff
 import com.khangle.mediaplayerapp.databinding.ItemPlaylistBinding
 
-class PlaylistAdapter(val onClick: (Playlist) -> Unit) : ListAdapter<Playlist,PlaylistViewHolder>(PlaylistDiff){
+class PlaylistAdapter(val onClick: (Playlist) -> Unit) : ListAdapter<Playlist, PlaylistViewHolder>(PlaylistDiff){
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PlaylistViewHolder {
         return PlaylistViewHolder.create(parent, onClick)
     }
@@ -20,7 +20,7 @@ class PlaylistAdapter(val onClick: (Playlist) -> Unit) : ListAdapter<Playlist,Pl
 
 }
 
-class PlaylistPagingAdapter(val onClick: (Playlist) -> Unit) : PagingDataAdapter<Playlist,PlaylistViewHolder>(PlaylistDiff){
+class PlaylistPagingAdapter(val onClick: (Playlist) -> Unit) : PagingDataAdapter<Playlist, PlaylistViewHolder>(PlaylistDiff){
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PlaylistViewHolder {
         return PlaylistViewHolder.create(parent, onClick)
     }
@@ -52,7 +52,7 @@ class PlaylistViewHolder(parent: ViewGroup, val onClick: (Playlist) -> Unit): Re
     }
 
     companion object {
-        fun create(parent: ViewGroup, onClick: (Playlist) -> Unit) : PlaylistViewHolder{
+        fun create(parent: ViewGroup, onClick: (Playlist) -> Unit) : PlaylistViewHolder {
             return PlaylistViewHolder(parent, onClick)
         }
     }

@@ -6,12 +6,23 @@
 
     </data>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:background="@color/black"
-        android:id="@+id/albumTrack"
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:context=".newReleaseDetail.AlbumDetailFragment">
-
-    </androidx.recyclerview.widget.RecyclerView>
+        android:layout_height="match_parent">
+        <androidx.recyclerview.widget.RecyclerView
+            android:background="@color/black"
+            android:id="@+id/albumTrack"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:context=".newReleaseDetail.AlbumDetailFragment"/>
+        <ProgressBar
+            android:layout_gravity="center"
+            android:indeterminate="true"
+            android:indeterminateTintMode="src_atop"
+            android:indeterminateTint="@color/main_color"
+            android:id="@+id/albumDetailProgress"
+            android:visibility="invisible"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+    </FrameLayout>
 </layout>

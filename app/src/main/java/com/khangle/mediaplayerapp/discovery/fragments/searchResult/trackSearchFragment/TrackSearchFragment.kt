@@ -6,10 +6,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.khangle.mediaplayerapp.MainActivityViewModel
@@ -27,7 +29,7 @@ class TrackSearchFragment() : Fragment() {
     lateinit var binding: FragmentTrackSearchBinding
     private val mainViewModel: MainActivityViewModel by viewModels()
     private val parenViewmodel: SearchResultViewModel by lazy {
-        (requireParentFragment() as SearchResultFragment).viewmodel
+        (requireParentFragment() as SearchResultFragment).searchResultViewmodel
     }
     lateinit var searchTrackAdapter: TrackPagingAdapter
     lateinit var recyclerView: RecyclerView
@@ -64,12 +66,18 @@ class TrackSearchFragment() : Fragment() {
         }
         lifecycleScope.launch {
             val value = parenViewmodel.searchQuerry.value
-            parenViewmodel.querryTrack(value!!).collectLatest {
+            parenViewmodel.querryTrack(value!!)?.collectLatest {
                 searchTrackAdapter.submitData(it)
 
             }
 
-
+        }
+        searchTrackAdapter.addLoadStateListener {
+            when (it.refresh) {
+                is LoadState.Error -> {
+                    Toast.makeText(requireContext(), (it.refresh as LoadState.Error).error.message, Toast.LENGTH_SHORT).show()
+                }
+            }
         }
     }
 

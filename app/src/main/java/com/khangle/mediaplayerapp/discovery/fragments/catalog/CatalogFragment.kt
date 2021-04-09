@@ -4,19 +4,19 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
+import com.khangle.mediaplayerapp.BaseFragment
 import com.khangle.mediaplayerapp.R
+import com.khangle.mediaplayerapp.data.model.Resource
 import com.khangle.mediaplayerapp.databinding.FragmentCatalogBinding
-import com.khangle.mediaplayerapp.recycleviewadapter.GenreAdapter
 import com.khangle.mediaplayerapp.recycleviewadapter.SpacesItemDecoration
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class CatalogFragment : Fragment() {
-
+class CatalogFragment : BaseFragment() {
 
     private val catalogViewModel: CatalogViewModel by viewModels()
     lateinit var binding: FragmentCatalogBinding
@@ -31,16 +31,25 @@ class CatalogFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        catalogViewModel.refresh()
         binding.genreRecyclerview.layoutManager = GridLayoutManager(context, 2)
         val adapter = GenreAdapter { genre ->
 
         }
         binding.genreRecyclerview.adapter = adapter
         catalogViewModel.genreList.observe(viewLifecycleOwner) {
-            adapter.submitList(it)
+            when (it)
+            {
+                is Resource.Success -> { adapter.submitList(it.data) ; binding.catalogProgress.visibility = View.INVISIBLE }
+                is Resource.Loading -> { binding.catalogProgress.visibility = View.VISIBLE }
+                is Resource.Error -> {
+                    Toast.makeText(requireContext(),it.message, Toast.LENGTH_SHORT).show(); binding.catalogProgress.visibility = View.INVISIBLE }
+            }
         }
         binding.genreRecyclerview.addItemDecoration(SpacesItemDecoration(50))
     }
 
-
+    override fun refresh() {
+        catalogViewModel.refresh()
+    }
 }

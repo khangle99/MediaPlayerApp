@@ -19,7 +19,7 @@
 
     <keep_state_fragment
         android:id="@+id/navigation_notifications"
-        android:name="com.khangle.mediaplayerapp.notifications.NotificationsFragment"
+        android:name="com.khangle.mediaplayerapp.library.LibraryFragment"
         android:label="noti"
-        tools:layout="@layout/fragment_notifications" />
+        tools:layout="@layout/fragment_library" />
 </navigation>

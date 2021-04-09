@@ -1,4 +1,4 @@
-package com.khangle.mediaplayerapp.recycleviewadapter
+package com.khangle.mediaplayerapp.discovery.fragments.searchResult.artistSearchFragment
 
 import android.view.LayoutInflater
 import android.view.ViewGroup

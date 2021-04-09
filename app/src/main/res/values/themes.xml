@@ -4,7 +4,8 @@
         <item name="android:windowDrawsSystemBarBackgrounds">true</item>
         <item name="android:statusBarColor">@android:color/transparent</item>
         <item name="android:windowTranslucentStatus">true</item>
-<!--        <item name="android:editTextColor">@android:color/white</item>-->
+        <item name="android:editTextColor">@color/white</item>
+        <item name="android:textColorHint">@color/grey</item>
         <!-- Primary brand color. -->true
         <item name="colorPrimary">@color/white</item>
         <item name="colorPrimaryVariant">@color/purple_700</item>

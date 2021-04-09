@@ -12,6 +12,27 @@ import androidx.recyclerview.widget.RecyclerView
 import com.khangle.mediaplayerapp.R
 import com.khangle.mediaplayerapp.databinding.ItemLoadStateBinding
 
+
+class LoadStateAdapter(
+    private val retry: () -> Unit
+) : LoadStateAdapter<LoadStateViewHolder>() {
+
+    override fun onCreateViewHolder(
+        parent: ViewGroup,
+        loadState: LoadState
+    ): LoadStateViewHolder {
+        Log.e("tao view state", "tao state holder--------------")
+        return LoadStateViewHolder(parent, retry)
+    }
+
+    override fun onBindViewHolder(
+        holder: LoadStateViewHolder,
+        loadState: LoadState
+    ) {
+        Log.e("bind view state", "bind state holder: ------------------")
+        holder.bind(loadState)
+    }
+}
 class LoadStateViewHolder(
     parent: ViewGroup,
     retry: () -> Unit
@@ -46,26 +67,5 @@ class LoadStateViewHolder(
         fun create(parent: ViewGroup, retry: () -> Unit): LoadStateViewHolder {
             return LoadStateViewHolder(parent,retry)
         }
-    }
-}
-
-class LoadStateAdapter(
-    private val retry: () -> Unit
-) : LoadStateAdapter<LoadStateViewHolder>() {
-
-    override fun onCreateViewHolder(
-        parent: ViewGroup,
-        loadState: LoadState
-    ): LoadStateViewHolder {
-        Log.e("tao view state", "tao state holder--------------")
-       return LoadStateViewHolder(parent, retry)
-    }
-
-    override fun onBindViewHolder(
-        holder: LoadStateViewHolder,
-        loadState: LoadState
-    ) {
-        Log.e("bind view state", "bind state holder: ------------------")
-        holder.bind(loadState)
     }
 }
