@@ -18,7 +18,7 @@ import com.khangle.mediaplayerapp.discovery.fragments.searchResult.searchtypevie
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class SearchResultFragment : Fragment() {
+class SearchResultFragment: Fragment() {
 
     private lateinit var binding: FragmentSearchResultBinding
     val searchResultViewmodel: SearchResultViewModel by viewModels()
@@ -41,7 +41,7 @@ class SearchResultFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         navController = findNavController()
-        val querry = arguments?.getString("querry")!!
+        val querry = arguments?.getString("query")!!
         searchResultViewmodel.searchQuerry.value = querry
         viewPager = binding.pager
         viewPagerAdapter = SearchTypeViewPagerAdapter(this)

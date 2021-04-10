@@ -34,7 +34,7 @@ class SignInActivity : AppCompatActivity() {
         binding.signInWV.settings.setJavaScriptCanOpenWindowsAutomatically(true);
         binding.signInWV.settings.setSupportMultipleWindows(true)
         binding.signInWV.settings.userAgentString = USER_AGENT
-        binding.signInWV.loadUrl("https://connect.deezer.com/oauth/auth.php?app_id=472082&redirect_uri=https://www.facebook.com/socbaycf/&perms=basic_access,email")
+        binding.signInWV.loadUrl("https://connect.deezer.com/oauth/auth.php?app_id=472082&redirect_uri=https://www.facebook.com/socbaycf/&perms=basic_access,email,manage_library,delete_library")
         binding.signInWV.webChromeClient = object : WebChromeClient() {
             override fun onConsoleMessage(consoleMessage: ConsoleMessage?): Boolean {
                 consoleMessage?.let {

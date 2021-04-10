@@ -17,6 +17,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.motion.widget.MotionLayout
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentContainerView
 import androidx.fragment.app.commit
 import androidx.lifecycle.Observer
 import androidx.navigation.findNavController
@@ -228,10 +229,16 @@ class MainActivity : AppCompatActivity() {
             }
         })
     }
-
-    override fun onSupportNavigateUp(): Boolean {
-
-        return findNavController(R.id.nav_host_fragment).navigateUp()
+    var  hostFragment: Fragment? = null
+    override fun onBackPressed() {
+        hostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment)
+        hostFragment?.let {
+            if(it.childFragmentManager.backStackEntryCount > 1) {
+                hostFragment?.childFragmentManager?.popBackStackImmediate();
+                return@onBackPressed
+            }
+        }
+        super.onBackPressed()
     }
 
     private var target = object : Target {

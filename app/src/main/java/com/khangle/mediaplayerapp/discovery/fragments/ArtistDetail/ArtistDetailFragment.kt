@@ -8,6 +8,7 @@ import android.widget.Toast
 import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.commit
 import androidx.fragment.app.viewModels
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
@@ -18,17 +19,17 @@ import com.khangle.mediaplayerapp.MainActivityViewModel
 import com.khangle.mediaplayerapp.R
 import com.khangle.mediaplayerapp.data.model.Artist
 import com.khangle.mediaplayerapp.databinding.FragmentArtistDetailBinding
+import com.khangle.mediaplayerapp.discovery.fragments.searchResult.SearchResultFragment
 import com.khangle.mediaplayerapp.discovery.fragments.searchResult.artistSearchFragment.ArtistAdapter
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class ArtistDetailFragment : BaseFragment() {
+class ArtistDetailFragment constructor(val containerId: Int): BaseFragment() { // su dung 2 noi sau khi click search va click vao favourtite artist
 
     lateinit var binding: FragmentArtistDetailBinding
     private val artistDetailViewmodel: ArtistDetailViewModel by viewModels()
     private val mainViewModel: MainActivityViewModel by viewModels()
     lateinit var artist: Artist
-    lateinit var navController: NavController
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -42,7 +43,7 @@ class ArtistDetailFragment : BaseFragment() {
     lateinit var artistAdapter: ArtistAdapter
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        navController = findNavController()
+
         arguments?.let {
             artist = it.getParcelable("artist")!! // co the crash neu sai key
         }
@@ -52,7 +53,10 @@ class ArtistDetailFragment : BaseFragment() {
         artistTrackRecyclerView = binding.artistTrackList
         artistAdapter = ArtistAdapter{ artist ->
             val bundle = bundleOf("artist" to artist)
-            navController.navigate(R.id.action_artistDetailFragment_self, bundle)
+            parentFragmentManager.commit {
+                replace(containerId, ArtistDetailFragment(containerId).also { it.arguments = bundle }, "relate")
+                addToBackStack("relate")
+            }
         }
         artistArtistAdapter = ArtistDetailAdapter(artist,artistAdapter){ track ->
             mainViewModel.play(

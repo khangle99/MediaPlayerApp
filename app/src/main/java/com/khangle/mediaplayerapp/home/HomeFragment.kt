@@ -99,7 +99,7 @@ class HomeFragment : BaseFragment() {
         homeViewModel.newReleaseAlbums.observe(viewLifecycleOwner, {
             newReleaseAlbumAdapter.submitList(it)
         })
-
+        binding.tracksChart.isNestedScrollingEnabled = false
         binding.swipeRefresh.setOnRefreshListener {
             homeViewModel.refresh()
         }

@@ -9,6 +9,7 @@ import android.widget.Toast
 import androidx.core.os.bundleOf
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.commit
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.paging.LoadState
@@ -16,6 +17,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.khangle.mediaplayerapp.R
 import com.khangle.mediaplayerapp.databinding.FragmentArtistSearchBinding
+import com.khangle.mediaplayerapp.discovery.fragments.ArtistDetail.ArtistDetailFragment
 import com.khangle.mediaplayerapp.discovery.fragments.searchResult.SearchResultFragment
 import com.khangle.mediaplayerapp.discovery.fragments.searchResult.SearchResultViewModel
 import com.khangle.mediaplayerapp.recycleviewadapter.SpacesItemDecoration
@@ -26,7 +28,6 @@ import kotlinx.coroutines.launch
 @AndroidEntryPoint
 class ArtistSearchFragment : Fragment() {
     lateinit var binding: FragmentArtistSearchBinding
-    lateinit var navController: NavController
     private val parenViewmodel: SearchResultViewModel by lazy {
         (requireParentFragment() as SearchResultFragment).searchResultViewmodel
     }
@@ -37,20 +38,31 @@ class ArtistSearchFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = DataBindingUtil.inflate(inflater,R.layout.fragment_artist_search, container, false)
+        binding =
+            DataBindingUtil.inflate(inflater, R.layout.fragment_artist_search, container, false)
         binding.lifecycleOwner = viewLifecycleOwner
         return binding.root
     }
+
     lateinit var artistPagingAdapter: ArtistPagingAdapter
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         //        textView = binding.noResultTV
-       navController =  (requireParentFragment() as SearchResultFragment).navController
+
         recyclerView = binding.artistSearchRecyclerview
-        recyclerView.layoutManager = GridLayoutManager(context,2);
+        recyclerView.layoutManager = GridLayoutManager(context, 2);
         artistPagingAdapter = ArtistPagingAdapter { artist ->
             val bundle = bundleOf("artist" to artist)
-            navController.navigate(R.id.action_searchResultFragment_to_artistDetailFragment, bundle)
+            requireParentFragment().parentFragmentManager.commit {
+                replace(
+                    R.id.nav_discovery_fragment,
+                    ArtistDetailFragment(R.id.nav_discovery_fragment).also {
+                        it.arguments = bundle
+                    },
+                    "artist_detail"
+                )
+                addToBackStack("")
+            }
 
         }
         recyclerView.adapter = artistPagingAdapter
@@ -61,7 +73,7 @@ class ArtistSearchFragment : Fragment() {
 //            footer = LoadStateAdapter(retry)
 //        )
         artistPagingAdapter.addLoadStateListener {
-            Log.e("Load state", "onViewCreated: ${ it.append.toString()}")
+            Log.e("Load state", "onViewCreated: ${it.append.toString()}")
 
         }
         lifecycleScope.launch {
@@ -73,7 +85,11 @@ class ArtistSearchFragment : Fragment() {
         artistPagingAdapter.addLoadStateListener {
             when (it.refresh) {
                 is LoadState.Error -> {
-                    Toast.makeText(requireContext(), (it.refresh as LoadState.Error).error.message, Toast.LENGTH_SHORT).show()
+                    Toast.makeText(
+                        requireContext(),
+                        (it.refresh as LoadState.Error).error.message,
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
             }
         }

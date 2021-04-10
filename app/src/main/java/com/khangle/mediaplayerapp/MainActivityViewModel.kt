@@ -7,7 +7,10 @@ import android.util.Log
 import androidx.lifecycle.*
 import com.khangle.mediaplayerapp.data.model.Genre
 import com.khangle.mediaplayerapp.data.model.Track
+import com.khangle.mediaplayerapp.data.model.UserInfo
+import com.khangle.mediaplayerapp.data.network.retrofit.BaseWebservice
 import com.khangle.mediaplayerapp.data.network.retrofit.DeezerAuthBaseService
+import com.khangle.mediaplayerapp.data.network.retrofit.DeezerBaseUserService
 import com.khangle.mediaplayerapp.media.IS_CHANGE_PLAYLIST
 import com.khangle.mediaplayerapp.media.MusicServiceConnection
 import com.khangle.mediaplayerapp.media.NOTHING_PLAYING
@@ -20,7 +23,7 @@ import retrofit2.Response
 import javax.inject.Inject
 
 @HiltViewModel
-class MainActivityViewModel @Inject constructor(val musicServiceConnection: MusicServiceConnection,private val deezerAuthBaseService: DeezerAuthBaseService) :
+class MainActivityViewModel @Inject constructor(val musicServiceConnection: MusicServiceConnection,private val deezerAuthBaseService: DeezerAuthBaseService,  val baseUserService: DeezerBaseUserService) :
     ViewModel() {
     val genreList = mutableListOf<Genre>()
     val metadataBuilder = MediaMetadataCompat.Builder()
@@ -145,6 +148,16 @@ class MainActivityViewModel @Inject constructor(val musicServiceConnection: Musi
             })
             Log.i("-----------", "getToken2: -----------------")
 
+        }
+
+    }
+
+    private val _user = MutableLiveData<UserInfo>()
+    val user: LiveData<UserInfo> = _user
+    fun getUserInfo(token: String) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val userInfo = baseUserService.getUserInfo(token)
+            _user.postValue(userInfo)
         }
 
     }

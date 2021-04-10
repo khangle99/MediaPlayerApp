@@ -17,7 +17,7 @@ import com.khangle.mediaplayerapp.databinding.FragmentPlaylistDetailBinding
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class PlaylistDetailFragment : BaseFragment() {
+class PlaylistDetailFragment constructor(containerId: Int): BaseFragment() {
     private lateinit var binding: FragmentPlaylistDetailBinding
     private val playListDetailViewmodel: PlaylistDetailViewModel by viewModels()
     private val mainViewModel: MainActivityViewModel by viewModels()
