@@ -1,5 +1,6 @@
 package com.khangle.mediaplayerapp.discovery.fragments.catalog
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -19,6 +20,7 @@ class CatalogViewModel @Inject constructor(private val repository: DeezerReposit
     val genreList: LiveData<Resource<List<Genre>>> = _genreList
 
      fun refresh() {
+         Log.i("d", "refresh: lai data")
         viewModelScope.launch(Dispatchers.IO) {
             try {
                 if (_genreList.value == null) {_genreList.postValue(Resource.Loading())}

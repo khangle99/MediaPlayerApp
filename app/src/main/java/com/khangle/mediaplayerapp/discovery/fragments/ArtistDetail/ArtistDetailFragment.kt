@@ -10,8 +10,6 @@ import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.commit
 import androidx.fragment.app.viewModels
-import androidx.navigation.NavController
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.khangle.mediaplayerapp.BaseFragment
@@ -19,7 +17,6 @@ import com.khangle.mediaplayerapp.MainActivityViewModel
 import com.khangle.mediaplayerapp.R
 import com.khangle.mediaplayerapp.data.model.Artist
 import com.khangle.mediaplayerapp.databinding.FragmentArtistDetailBinding
-import com.khangle.mediaplayerapp.discovery.fragments.searchResult.SearchResultFragment
 import com.khangle.mediaplayerapp.discovery.fragments.searchResult.artistSearchFragment.ArtistAdapter
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -34,7 +31,12 @@ class ArtistDetailFragment constructor(val containerId: Int): BaseFragment() { /
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-       binding =  DataBindingUtil.inflate(inflater,R.layout.fragment_artist_detail, container, false)
+       binding =  DataBindingUtil.inflate(
+           inflater,
+           R.layout.fragment_artist_detail,
+           container,
+           false
+       )
         binding.lifecycleOwner = viewLifecycleOwner
         return binding.root
     }
@@ -54,11 +56,15 @@ class ArtistDetailFragment constructor(val containerId: Int): BaseFragment() { /
         artistAdapter = ArtistAdapter{ artist ->
             val bundle = bundleOf("artist" to artist)
             parentFragmentManager.commit {
-                replace(containerId, ArtistDetailFragment(containerId).also { it.arguments = bundle }, "relate")
-                addToBackStack("relate")
+                replace(
+                    containerId,
+                    ArtistDetailFragment(containerId).also { it.arguments = bundle },
+                    "relate"
+                )
+                addToBackStack(null)
             }
         }
-        artistArtistAdapter = ArtistDetailAdapter(artist,artistAdapter){ track ->
+        artistArtistAdapter = ArtistDetailAdapter(artist, artistAdapter){ track ->
             mainViewModel.play(
                 track.id.toString(),
                 artistArtistAdapter.currentList
@@ -75,7 +81,7 @@ class ArtistDetailFragment constructor(val containerId: Int): BaseFragment() { /
         })
         artistDetailViewmodel.error.observe(viewLifecycleOwner, {
             if (!it.equals("")) {
-                Toast.makeText(requireContext(),it,Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), it, Toast.LENGTH_SHORT).show()
             }
         })
 
@@ -87,4 +93,5 @@ class ArtistDetailFragment constructor(val containerId: Int): BaseFragment() { /
     override fun refresh() {
         artistDetailViewmodel.loadTrackAndRelateArtist(artist.id.toString())
     }
+
 }

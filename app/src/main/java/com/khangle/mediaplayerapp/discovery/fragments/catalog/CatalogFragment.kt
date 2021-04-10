@@ -1,6 +1,7 @@
 package com.khangle.mediaplayerapp.discovery.fragments.catalog
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -20,18 +21,20 @@ class CatalogFragment : BaseFragment() {
 
     private val catalogViewModel: CatalogViewModel by viewModels()
     lateinit var binding: FragmentCatalogBinding
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        Log.i("da", "onCreate: tao lai")
+        catalogViewModel.refresh()
+    }
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        Log.i("dasd", "onCreateView: ")
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_catalog,container,false)
         binding.lifecycleOwner= viewLifecycleOwner
-        return binding.root
-    }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        catalogViewModel.refresh()
         binding.genreRecyclerview.layoutManager = GridLayoutManager(context, 2)
         val adapter = GenreAdapter { genre ->
 
@@ -47,9 +50,24 @@ class CatalogFragment : BaseFragment() {
             }
         }
         binding.genreRecyclerview.addItemDecoration(SpacesItemDecoration(50))
+
+
+
+        return binding.root
+    }
+
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
     }
 
     override fun refresh() {
         catalogViewModel.refresh()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        Log.i("dasda", "onDestroy: ")
     }
 }

@@ -37,7 +37,6 @@ class LibraryFragment : Fragment() {
         notificationsViewModel =
             ViewModelProvider(this).get(NotificationsViewModel::class.java)
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_library, container, false)
-
         return binding.root
     }
 
@@ -62,7 +61,7 @@ class LibraryFragment : Fragment() {
         }
 
         mainActivityViewModel.user.observe(viewLifecycleOwner) {
-            //  val id = it.id
+
             Toast.makeText(requireContext(), it.id.toString(), Toast.LENGTH_SHORT).show()
         }
 
@@ -78,22 +77,28 @@ class LibraryFragment : Fragment() {
                     // No type safety.
                     preferences[TOKEN] ?: ""
                 }.collect {
-                    Toast.makeText(requireContext(), it, Toast.LENGTH_SHORT).show()
-                    mainActivityViewModel.getUserInfo(it)
-                    token = it
-                    binding.tokentv.text = it
+                    if (!it.equals("")) {
+                        Toast.makeText(requireContext(), it, Toast.LENGTH_SHORT).show()
+                        mainActivityViewModel.getUserInfo(it)
+                        token = it
+                        binding.tokentv.text = it
+                    }
+
                 }
         }
-        binding.favouriteTrack.setOnClickListener {
-            lifecycleScope.launch(Dispatchers.IO) {
-                val favouriteArtist =
-                    mainActivityViewModel.baseUserService.getFavouriteArtist(token)
-                val ftrack = mainActivityViewModel.baseUserService.getFavouriteTracks(token)
-               val reArt =  mainActivityViewModel.baseUserService.getRecommendArtists(token)
-               val reTr =  mainActivityViewModel.baseUserService.getReommendTracks(token)
-                favouriteArtist
-                ftrack
+        binding.favouriteTrack.setOnClickListener { // ham test
+            if (this::token.isInitialized) {
+                lifecycleScope.launch(Dispatchers.IO) {
+                    val favouriteArtist =
+                        mainActivityViewModel.baseUserService.getFavouriteArtist(token)
+                    val ftrack = mainActivityViewModel.baseUserService.getFavouriteTracks(token)
+                    val reArt =  mainActivityViewModel.baseUserService.getRecommendArtists(token)
+                    val reTr =  mainActivityViewModel.baseUserService.getReommendTracks(token)
+                    favouriteArtist
+                    ftrack
+                }
             }
+
 
         }
 

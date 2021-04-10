@@ -11,7 +11,6 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.commit
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.NavController
 import androidx.paging.LoadState
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -61,7 +60,7 @@ class ArtistSearchFragment : Fragment() {
                     },
                     "artist_detail"
                 )
-                addToBackStack("")
+                addToBackStack(null)
             }
 
         }

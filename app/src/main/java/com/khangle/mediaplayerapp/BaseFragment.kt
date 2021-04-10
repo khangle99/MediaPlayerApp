@@ -5,6 +5,7 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
+import android.view.KeyEvent
 import androidx.fragment.app.Fragment
 import com.khangle.mediaplayerapp.util.NetworkUtil
 
@@ -19,6 +20,17 @@ abstract class BaseFragment : Fragment() {
     override fun onResume() {
         super.onResume()
        requireContext().registerReceiver(networkReceiver, filter)
+        if (view == null) {
+            return
+        }
+        requireView().isFocusableInTouchMode = true
+        requireView().requestFocus()
+        requireView().setOnKeyListener { v, keyCode, event ->
+            if (event.action === KeyEvent.ACTION_UP && keyCode == KeyEvent.KEYCODE_BACK) {
+                parentFragmentManager.popBackStackImmediate()
+                true
+            } else false
+        }
     }
 
     override fun onPause() {

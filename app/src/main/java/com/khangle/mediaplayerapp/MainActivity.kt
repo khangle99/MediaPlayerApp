@@ -17,10 +17,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.motion.widget.MotionLayout
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentContainerView
 import androidx.fragment.app.commit
 import androidx.lifecycle.Observer
-import androidx.navigation.findNavController
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.khangle.mediaplayerapp.customview.PlayButton
 import com.khangle.mediaplayerapp.customview.RepeatButton
@@ -44,37 +42,54 @@ class MainActivity : AppCompatActivity() {
     lateinit var motionLayout: MotionLayout
     lateinit var bottomMotionLayout: MotionLayout
 
-    private val homeFragment = HomeFragment()
-    private val discoveryFragment = DiscoveryFragment()
-    private val notificationFragment = LibraryFragment()
+    private val homeFragment=  HomeFragment()
+    private val discoveryFragment= DiscoveryFragment()
+    private val libraryFragment = LibraryFragment()
 
     @SuppressLint("RestrictedApi")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
+        supportFragmentManager.commit {
+            add(R.id.nav_host_fragment, homeFragment, "")
+            add(R.id.nav_host_fragment, discoveryFragment)
+            add(R.id.nav_host_fragment, libraryFragment)
+            hide(discoveryFragment)
+            hide(libraryFragment)
+        }
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
         binding.setLifecycleOwner(this)
         binding.navView.setOnNavigationItemSelectedListener {
-            var fragment: Fragment? = null
+            var newFragment: Fragment? = null
+            var currentFragment: Fragment? = null
+            // doi cach check lai thanh get tu manager ra, khac nul thhi kiem tiep visialbe
+         //   val home = supportFragmentManager.findFragmentByTag("home")
+         when {
+             homeFragment.isVisible -> currentFragment = homeFragment
+             discoveryFragment.isVisible -> currentFragment = discoveryFragment
+             else -> currentFragment = libraryFragment
+         }
             when (it.itemId) {
                 R.id.navigation_home -> {
-                    fragment = homeFragment
+                    newFragment = homeFragment
                 }
                 R.id.navigation_discovery -> {
-
-                    fragment = discoveryFragment
-                }
-                R.id.navigation_notifications -> {
-                    fragment = notificationFragment
+                    newFragment = discoveryFragment
                 }
                 else -> {
+                    newFragment = libraryFragment
                 }
             }
-            supportFragmentManager.commit {
-                replace(R.id.nav_host_fragment, fragment!!, it.itemId.toString())
-                addToBackStack("")
+
+            if (newFragment === currentFragment) { // click tai cho thi k can clam gi
+                false
+            } else {
+                supportFragmentManager.commit {
+                    hide(currentFragment)
+                    show(newFragment)
+                    //  addToBackStack(null)
+                }
+                true
             }
-            true
         }
 
         // kiem tra va doi lai state cho dung: chua lam
@@ -95,8 +110,6 @@ class MainActivity : AppCompatActivity() {
             }
         })
         mainActivityViewModel.state.observe(this, observer)
-
-        binding.navView.selectedItemId = R.id.navigation_home // default chon
     }
 
     val observer = Observer<PlaybackStateCompat> {
@@ -228,17 +241,6 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         })
-    }
-    var  hostFragment: Fragment? = null
-    override fun onBackPressed() {
-        hostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment)
-        hostFragment?.let {
-            if(it.childFragmentManager.backStackEntryCount > 1) {
-                hostFragment?.childFragmentManager?.popBackStackImmediate();
-                return@onBackPressed
-            }
-        }
-        super.onBackPressed()
     }
 
     private var target = object : Target {

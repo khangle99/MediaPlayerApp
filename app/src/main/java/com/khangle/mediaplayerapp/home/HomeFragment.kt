@@ -51,9 +51,15 @@ class HomeFragment : BaseFragment() {
         homeViewModel.refresh()
     }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        Log.i(TAG, "da chay onCreate")
+        homeViewModel.refresh()
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        Log.i(TAG, "onViewCreated: call viewcreate")
+        Log.i(TAG, "onViewCreated: call onViewCreated---")
         newReleaseAlbumAdapter = ChartAlbumAdapter {
             val albumDetailFragment = AlbumDetailFragment()
             albumDetailFragment.arguments = bundleOf("album" to it)
@@ -103,7 +109,6 @@ class HomeFragment : BaseFragment() {
         binding.swipeRefresh.setOnRefreshListener {
             homeViewModel.refresh()
         }
-        homeViewModel.refresh()
         homeViewModel.error.observe(viewLifecycleOwner, {
             Toast.makeText(requireContext(), it, Toast.LENGTH_SHORT).show()
         })
