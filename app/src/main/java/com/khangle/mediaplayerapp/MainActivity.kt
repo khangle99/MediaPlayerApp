@@ -86,6 +86,7 @@ class MainActivity : AppCompatActivity() {
                 supportFragmentManager.commit {
                     hide(currentFragment)
                     show(newFragment)
+                    setPrimaryNavigationFragment(newFragment) // nested backstack
                     //  addToBackStack(null)
                 }
                 true

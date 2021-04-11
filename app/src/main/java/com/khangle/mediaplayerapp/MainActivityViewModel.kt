@@ -8,8 +8,6 @@ import androidx.lifecycle.*
 import com.khangle.mediaplayerapp.data.model.Genre
 import com.khangle.mediaplayerapp.data.model.Track
 import com.khangle.mediaplayerapp.data.model.UserInfo
-import com.khangle.mediaplayerapp.data.network.retrofit.BaseWebservice
-import com.khangle.mediaplayerapp.data.network.retrofit.DeezerAuthBaseService
 import com.khangle.mediaplayerapp.data.network.retrofit.DeezerBaseUserService
 import com.khangle.mediaplayerapp.media.IS_CHANGE_PLAYLIST
 import com.khangle.mediaplayerapp.media.MusicServiceConnection
@@ -17,13 +15,10 @@ import com.khangle.mediaplayerapp.media.NOTHING_PLAYING
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 import javax.inject.Inject
 
 @HiltViewModel
-class MainActivityViewModel @Inject constructor(val musicServiceConnection: MusicServiceConnection,private val deezerAuthBaseService: DeezerAuthBaseService,  val baseUserService: DeezerBaseUserService) :
+class MainActivityViewModel @Inject constructor(val musicServiceConnection: MusicServiceConnection,  val baseUserService: DeezerBaseUserService) :
     ViewModel() {
     val genreList = mutableListOf<Genre>()
     val metadataBuilder = MediaMetadataCompat.Builder()
@@ -124,32 +119,8 @@ class MainActivityViewModel @Inject constructor(val musicServiceConnection: Musi
 
     private val _accessToken = MutableLiveData<String>()
     val accessToken: LiveData<String> = _accessToken
-    fun getToken(code: String) {
-        viewModelScope.launch(Dispatchers.IO) {
-            Log.i("-----------", "getToken: -----------------")
-            val fetchAccessToken =
-                deezerAuthBaseService.fetchAccessToken("472082", "e928543dc74d7f29527e03a45f972a2f", code)
-            fetchAccessToken.enqueue(object : Callback<String> {
-                override fun onResponse(call: Call<String>, response: Response<String>) {
-
-                    val body = response.body()!!
-
-                    val expires = body.substringAfterLast("=")
-                    val accessToken = body.substringBeforeLast("&").substringAfter("=")
-                    _accessToken.postValue(accessToken)
-                    Log.i("-------ss----", "${accessToken}: -----------------")
-                }
-
-                override fun onFailure(call: Call<String>, t: Throwable) {
-                    val message = t.message
-                    Log.i("-----------", "fail: -----------------")
-                }
-
-            })
-            Log.i("-----------", "getToken2: -----------------")
-
-        }
-
+    fun setToken(token: String) {
+       _accessToken.value = token
     }
 
     private val _user = MutableLiveData<UserInfo>()

@@ -26,7 +26,7 @@ interface DeezerBaseUserService {
     suspend fun getRecommendArtists(token: String): ArtistListRespone
 
     //get recommend track
-    suspend fun getReommendTracks(token: String): TrackListRespone
+    suspend fun getRecommendTracks(token: String): TrackListRespone
 
 }
 
@@ -47,8 +47,8 @@ interface DeezerUserService : DeezerBaseUserService {
     override suspend fun addFavouriteTracks(@Query("access_token") token: String, @Query("track_id")  trackId: Long)
     @DELETE("me/tracks")
     override suspend fun removeFavouriteTracks(@Query("access_token") token: String, @Query("track_id") trackId: Long)
-    @GET("me/recommendations/tracks")
-    override suspend fun getRecommendArtists(@Query("access_token") token: String): ArtistListRespone
     @GET("me/recommendations/artists")
-    override suspend fun getReommendTracks(@Query("access_token") token: String): TrackListRespone
+    override suspend fun getRecommendArtists(@Query("access_token") token: String): ArtistListRespone
+    @GET("me/recommendations/tracks")
+    override suspend fun getRecommendTracks(@Query("access_token") token: String): TrackListRespone
 }

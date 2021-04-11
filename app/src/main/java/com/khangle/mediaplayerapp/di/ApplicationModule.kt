@@ -3,7 +3,10 @@ package com.khangle.mediaplayerapp.di
 import android.content.ComponentName
 import android.content.Context
 import com.khangle.mediaplayerapp.data.network.okhttp.NetworkConnectionInterceptor
-import com.khangle.mediaplayerapp.data.network.retrofit.*
+import com.khangle.mediaplayerapp.data.network.retrofit.BaseWebservice
+import com.khangle.mediaplayerapp.data.network.retrofit.DeezerBaseUserService
+import com.khangle.mediaplayerapp.data.network.retrofit.DeezerService
+import com.khangle.mediaplayerapp.data.network.retrofit.DeezerUserService
 import com.khangle.mediaplayerapp.media.MusicService
 import com.khangle.mediaplayerapp.media.MusicServiceConnection
 import dagger.Module
@@ -15,7 +18,6 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import retrofit2.converter.scalars.ScalarsConverterFactory
 import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
 
@@ -31,15 +33,6 @@ object ApplicationModule {
             .addConverterFactory(GsonConverterFactory.create())
             .client(okHttpClient)
             .build().create(DeezerService::class.java)
-    }
-
-    @Provides
-    @Singleton
-    fun provideDeezerAuthService(okHttpClient: OkHttpClient): DeezerAuthBaseService {
-        return Retrofit.Builder().baseUrl("https://connect.deezer.com/oauth/")
-            .addConverterFactory(ScalarsConverterFactory.create())
-            .client(okHttpClient)
-            .build().create(DeezerAuthService::class.java)
     }
 
     @Provides

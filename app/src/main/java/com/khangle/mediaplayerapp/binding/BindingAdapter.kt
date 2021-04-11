@@ -15,7 +15,10 @@ import jp.wasabeef.picasso.transformations.BlurTransformation
 private const val TAG = "BindingAdapter"
 @BindingAdapter("image_url")
 fun setImageUrl(view: ImageView, path: String?) {
-    Picasso.get().load(path).error(R.drawable.ic_launcher_foreground).into(view) // khi error thi hien con android
+   if (path!= null && !path.equals("")) {
+        Picasso.get().load(path).error(R.drawable.ic_launcher_foreground).into(view) // khi error thi hien con android
+    }
+
 }
 
 @BindingAdapter("bkg_blur_url", "target")

@@ -391,6 +391,7 @@ class MusicService : MediaBrowserServiceCompat() {
                 // An error message is printed to UI via Toast message to inform the user.
                 ExoPlaybackException.TYPE_SOURCE -> {
                     message = R.string.error_media_not_found;
+                    val message1 = error.sourceException.message
                     Log.e(TAG, "TYPE_SOURCE: " + error.sourceException.message)
                 }
                 // If the error occurs in a render component, Exoplayer raises a type_remote error.
