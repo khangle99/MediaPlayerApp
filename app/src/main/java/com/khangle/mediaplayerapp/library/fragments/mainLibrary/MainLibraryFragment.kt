@@ -17,6 +17,7 @@ import com.khangle.mediaplayerapp.*
 import com.khangle.mediaplayerapp.databinding.FragmentMainLibraryBinding
 import com.khangle.mediaplayerapp.discovery.fragments.ArtistDetail.ArtistDetailFragment
 import com.khangle.mediaplayerapp.discovery.fragments.searchResult.artistSearchFragment.ArtistAdapter
+import com.khangle.mediaplayerapp.library.LibraryViewModel
 import com.khangle.mediaplayerapp.library.fragments.favouriteArtist.FavouriteArtistFragment
 import com.khangle.mediaplayerapp.library.fragments.favouriteTrack.FavouriteTrackFragment
 import com.khangle.mediaplayerapp.recycleviewadapter.TrackAdapter
@@ -31,6 +32,7 @@ class MainLibraryFragment : BaseFragment() {
     lateinit var token: String
     private val mainLibraryViewModel: MainLibraryViewModel by viewModels()
     private val mainActivityViewModel: MainActivityViewModel by activityViewModels()
+    private val libraryViewModel: LibraryViewModel by viewModels(ownerProducer = { requireParentFragment()} )
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -63,6 +65,11 @@ class MainLibraryFragment : BaseFragment() {
 
         mainLibraryViewModel.recommendTracks.observe(viewLifecycleOwner, {
             recommendTrackAdapter.submitList(it)
+        })
+
+        libraryViewModel.user.observe(viewLifecycleOwner, {
+            // setup UI user info
+            binding.userInfo = it
         })
     }
 
@@ -114,7 +121,6 @@ class MainLibraryFragment : BaseFragment() {
                     settings[TOKEN] = ""
                 }
             }
-
         }
 
         binding.favouriteArtist.setOnClickListener {

@@ -11,6 +11,7 @@ import com.khangle.mediaplayerapp.data.network.okhttp.NoConnectivityException
 import com.khangle.mediaplayerapp.data.repo.DeezerRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -33,12 +34,13 @@ class HomeViewModel @Inject constructor(val repository: DeezerRepository) : View
         viewModelScope.launch(Dispatchers.IO) {
             try {
                 if (_newReleaseAlbums.value == null) {  _isLoading.postValue(true) }
-                val newReleaseAlbum = repository.getNewReleaseAlbum()
-                _newReleaseAlbums.postValue(newReleaseAlbum)
-                val genres = repository.getGenres()
-                _genreList.postValue(genres)
-                val chartsTracks = repository.getSuggestionTracks()
-                _suggestionTracks.postValue(chartsTracks)
+                val newReleaseAlbum = async { repository.getNewReleaseAlbum() }
+                val genres = async { repository.getGenres() }
+                val chartsTracks = async { repository.getSuggestionTracks() }
+
+                _newReleaseAlbums.postValue(newReleaseAlbum.await())
+                _genreList.postValue(genres.await())
+                _suggestionTracks.postValue(chartsTracks.await())
                 _isLoading.postValue(false)
             } catch (e: NoConnectivityException) {
                 _error.postValue(e.message)

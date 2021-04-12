@@ -14,4 +14,7 @@
     <string name="dicoverySearchHint">Tracks, Nghệ sĩ, Playlists</string>
     <string name="new_releases">Mới phát hành</string>
     <string name="top_10_tracks">Top 10 bài hát</string>
+    <string name="sign_out">Đăng xuất</string>
+    <string name="sign_in_btn">Đăng nhập</string>
+    <string name="not_signed_msg">Bạn chưa đăng nhập</string>
 </resources>

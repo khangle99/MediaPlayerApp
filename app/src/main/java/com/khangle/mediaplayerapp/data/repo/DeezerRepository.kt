@@ -99,7 +99,7 @@ class ArtistPagingSource(
             }
             var next: Int? = null
             var remain = 0
-            if (response.next != null) {
+            if (response.next != "") {
                 val nextString = response.next
                 val start = nextString.lastIndexOf("=") + 1
                 val end = nextString.length
@@ -218,16 +218,3 @@ class TrackPagingSource(
 
 
 }
-
-
-//class TrackCharSource @Inject constructor(val baseWebservice: BaseWebservice) : PagingSource<Int, Track>() {
-//    override fun getRefreshKey(state: PagingState<Int, Track>): Int? {
-//
-//        TODO("Not yet implemented")
-//    }
-//
-//    override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Track> {
-//        TODO("Not yet implemented")
-//    }
-//
-//}

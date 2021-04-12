@@ -92,6 +92,7 @@ class HomeFragment : BaseFragment() {
         })
         binding.tracksChart.layoutManager = LinearLayoutManager(requireContext())
         binding.tracksChart.adapter = suggestionTrackAdapter
+        binding.tracksChart.isNestedScrollingEnabled = false
         homeViewModel.suggestionTracks.observe(requireActivity(), Observer {
             if (it.size > 0) {
                 suggestionTrackAdapter.submitList(it)
@@ -105,7 +106,7 @@ class HomeFragment : BaseFragment() {
         homeViewModel.newReleaseAlbums.observe(viewLifecycleOwner, {
             newReleaseAlbumAdapter.submitList(it)
         })
-        binding.tracksChart.isNestedScrollingEnabled = false
+
         binding.swipeRefresh.setOnRefreshListener {
             homeViewModel.refresh()
         }

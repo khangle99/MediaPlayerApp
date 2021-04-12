@@ -6,8 +6,6 @@
     <string name="notification_channel_description">Shows what music is currently playing</string>
     <string name="suggestionCollection">Suggestion Tracks</string>
     <string name="discoveryLabel">Discovery</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="no_result">No result</string>
     <string name="error">Error</string>
     <string name="try_again">Try Again</string>
@@ -15,12 +13,10 @@
     <string name="dicoverySearchHint">Tracks, Artists, Playlists</string>
     <string name="new_releases">New Releases</string>
     <string name="top_10_tracks">Top 10 Tracks</string>
-    <string name="title_activity_login">LoginActivity</string>
-    <!--
-    This string is used for square devices and overridden by hello_world in
-    values-round/strings.xml for round devices.
-    -->
     <string name="hello_world">Hello Square World!</string>
     <string name="title_activity_sign_in">SignInActivity</string>
+    <string name="sign_out">Sign out</string>
+    <string name="sign_in_btn">Sign In</string>
+    <string name="not_signed_msg">You are not signed in</string>
 
 </resources>

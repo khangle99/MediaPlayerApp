@@ -4,14 +4,12 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.core.os.bundleOf
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.commit
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
-import com.khangle.mediaplayerapp.MainActivityViewModel
 import com.khangle.mediaplayerapp.R
 import com.khangle.mediaplayerapp.TOKEN
 import com.khangle.mediaplayerapp.dataStore
@@ -27,7 +25,7 @@ import kotlinx.coroutines.launch
 @AndroidEntryPoint
 class LibraryFragment : Fragment() {
 
-    val mainActivityViewModel: MainActivityViewModel by activityViewModels()
+    public val libraryViewModel: LibraryViewModel by viewModels()
     private lateinit var binding: FragmentLibraryBinding
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -40,9 +38,7 @@ class LibraryFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        mainActivityViewModel.user.observe(viewLifecycleOwner, {
-            Toast.makeText(requireContext(), it.id.toString(), Toast.LENGTH_SHORT).show()
-        })
+
     }
 
     override fun onResume() {
@@ -62,6 +58,7 @@ class LibraryFragment : Fragment() {
                             mainLibraryFragment.arguments = bundleOf("token" to it)
                             replace(R.id.libraryHost, mainLibraryFragment)
                         }
+                        libraryViewModel.getUserInfo(it)
                     } else {
                         // chuyen fragment login
                         childFragmentManager.commit {

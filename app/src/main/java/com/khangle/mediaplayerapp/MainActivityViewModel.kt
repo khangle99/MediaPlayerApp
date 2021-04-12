@@ -4,17 +4,17 @@ import android.os.Bundle
 import android.support.v4.media.MediaMetadataCompat
 import android.support.v4.media.session.PlaybackStateCompat
 import android.util.Log
-import androidx.lifecycle.*
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModel
 import com.khangle.mediaplayerapp.data.model.Genre
 import com.khangle.mediaplayerapp.data.model.Track
-import com.khangle.mediaplayerapp.data.model.UserInfo
 import com.khangle.mediaplayerapp.data.network.retrofit.DeezerBaseUserService
 import com.khangle.mediaplayerapp.media.IS_CHANGE_PLAYLIST
 import com.khangle.mediaplayerapp.media.MusicServiceConnection
 import com.khangle.mediaplayerapp.media.NOTHING_PLAYING
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -121,16 +121,6 @@ class MainActivityViewModel @Inject constructor(val musicServiceConnection: Musi
     val accessToken: LiveData<String> = _accessToken
     fun setToken(token: String) {
        _accessToken.value = token
-    }
-
-    private val _user = MutableLiveData<UserInfo>()
-    val user: LiveData<UserInfo> = _user
-    fun getUserInfo(token: String) {
-        viewModelScope.launch(Dispatchers.IO) {
-            val userInfo = baseUserService.getUserInfo(token)
-            _user.postValue(userInfo)
-        }
-
     }
 
 

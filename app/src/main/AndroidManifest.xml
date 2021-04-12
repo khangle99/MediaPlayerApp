@@ -19,27 +19,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MediaPlayerApp">
 
-
-        <!--
-               Set to true if your app is Standalone, that is, it does not require the handheld
-               app to run.
-        -->
-        <meta-data
-            android:name="com.google.android.wearable.standalone"
-            android:value="true" />
-
         <activity
             android:name=".SignInActivity"
-            android:label="@string/title_activity_sign_in">
-        </activity>
-        <!-- <receiver -->
-        <!-- android:name=".NetworkChangeReceiver" -->
-        <!-- android:enabled="true" -->
-        <!-- android:exported="true"> -->
-        <!-- <intent-filter> -->
-        <!-- <action android:name="android.net.conn.CONNECTIVITY_CHANGE" /> -->
-        <!-- </intent-filter> -->
-        <!-- </receiver> -->
+            android:label="@string/title_activity_sign_in" />
         <activity
             android:name=".MainActivity"
             android:windowSoftInputMode="adjustNothing">

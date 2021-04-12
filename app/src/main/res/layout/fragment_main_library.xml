@@ -4,7 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
+        <variable
+            name="userInfo"
+            type="com.khangle.mediaplayerapp.data.model.UserInfo" />
     </data>
     <ScrollView
         android:layout_width="match_parent"
@@ -25,11 +27,16 @@
                 <ImageView
                     android:id="@+id/userAvartar"
                     android:layout_width="50dp"
-                    android:src="@drawable/ic_app"
+                    app:image_url="@{userInfo.avartar}"
                     android:layout_height="50dp"/>
-                <Space
+                <TextView
                     android:layout_weight="1"
+                    app:title="@{userInfo.name}"
+                    app:subtitle="@{userInfo.email}"
                     android:layout_width="0dp"
+                    android:textSize="18sp"
+                    android:layout_marginStart="20dp"
+                    android:textColor="@color/white"
                     android:layout_height="wrap_content"/>
 
                 <android.widget.Button
@@ -37,7 +44,7 @@
                     android:layout_width="88dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="end"
-                    android:text="Sign out" />
+                    android:text="@string/sign_out" />
             </LinearLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout
