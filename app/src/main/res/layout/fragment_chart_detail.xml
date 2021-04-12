@@ -13,7 +13,7 @@
             android:background="@color/black"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            tools:context=".chartDetail.ChartDetailDialogFragment"/>
+            tools:context=".home.fragments.chartDetail.ChartDetailDialogFragment"/>
         <ProgressBar
             android:id="@+id/progressBar"
             android:indeterminate="true"

@@ -2,6 +2,8 @@ package com.khangle.mediaplayerapp.recycleviewadapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
+import androidx.fragment.app.FragmentManager
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -17,11 +19,11 @@ import com.khangle.mediaplayerapp.databinding.ItemPlaylistHeaderBinding
 import com.khangle.mediaplayerapp.databinding.ItemTrackBinding
 import com.khangle.mediaplayerapp.discovery.fragments.searchResult.artistSearchFragment.ArtistAdapter
 
-class TrackAdapter(val onItemClick: (Track) -> Unit) :
+class TrackAdapter(val fragmentManager: FragmentManager,val onItemClick: (Track) -> Unit) :
     ListAdapter<Track, TrackViewHolder>(TrackDiff) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TrackViewHolder {
-        return TrackViewHolder.create(parent, onItemClick)
+        return TrackViewHolder.create(fragmentManager,parent, onItemClick)
     }
 
     override fun onBindViewHolder(holder: TrackViewHolder, position: Int) {
@@ -30,7 +32,7 @@ class TrackAdapter(val onItemClick: (Track) -> Unit) :
     }
 }
 
-class TrackPagingAdapter(val onItemClick: (Track) -> Unit) :
+class TrackPagingAdapter(val fragmentManager: FragmentManager,val onItemClick: (Track) -> Unit) :
     PagingDataAdapter<Track, TrackViewHolder>(
         TrackDiff
     ) {
@@ -39,16 +41,22 @@ class TrackPagingAdapter(val onItemClick: (Track) -> Unit) :
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TrackViewHolder {
-        return TrackViewHolder.create(parent, onItemClick)
+        return TrackViewHolder.create(fragmentManager,parent, onItemClick)
     }
 }
 
-class TrackViewHolder(private val binding: ItemTrackBinding, onItemClick: (Track) -> Unit) :
+class TrackViewHolder(val fragmentManager: FragmentManager,private val binding: ItemTrackBinding, onItemClick: (Track) -> Unit) :
     RecyclerView.ViewHolder(binding.root) {
     private lateinit var track: Track
     init {
         binding.root.setOnClickListener {
             onItemClick(track)
+        }
+        binding.moreOption.setOnClickListener {
+            // hien bottom sheet more option truyen vao id cho sheet
+            val moreOptionFragment = MoreOptionTrackDialogFragment()
+            moreOptionFragment.arguments = bundleOf("track" to track)
+           moreOptionFragment.show(fragmentManager,null)
         }
     }
 
@@ -67,11 +75,11 @@ class TrackViewHolder(private val binding: ItemTrackBinding, onItemClick: (Track
     }
 
     companion object {
-        fun create(parent: ViewGroup, onItemClick: (Track) -> Unit): TrackViewHolder {
+        fun create(fragmentManager: FragmentManager, parent: ViewGroup, onItemClick: (Track) -> Unit): TrackViewHolder {
             val inflater = LayoutInflater.from(parent.context)
             val bind = ItemTrackBinding.inflate(inflater, parent, false)
             // bind.setLifecycleOwner(parent.findViewTreeLifecycleOwner())
-            return TrackViewHolder(bind, onItemClick)
+            return TrackViewHolder(fragmentManager,bind, onItemClick)
         }
     }
 }

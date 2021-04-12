@@ -1,4 +1,4 @@
-package com.khangle.mediaplayerapp.chartDetail
+package com.khangle.mediaplayerapp.home.fragments.chartDetail
 
 import android.app.Dialog
 import android.content.BroadcastReceiver
@@ -54,7 +54,7 @@ class ChartDetailDialogFragment : BaseFullscreenDialogFragment() {
         arguments?.let {
             genre = it.getParcelable("genre")!!
             viewmodel.loadChartTracks(genre.id)
-            adapter = ChartDetailAdapter(genre) {
+            adapter = ChartDetailAdapter(parentFragmentManager,genre) {
                 mainActivityViewModel.play(
                     it.id.toString(),
                     adapter.currentList

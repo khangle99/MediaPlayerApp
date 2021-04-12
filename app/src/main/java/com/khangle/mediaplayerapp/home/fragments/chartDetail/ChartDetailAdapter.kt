@@ -1,7 +1,8 @@
-package com.khangle.mediaplayerapp.chartDetail
+package com.khangle.mediaplayerapp.home.fragments.chartDetail
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.khangle.mediaplayerapp.R
@@ -11,13 +12,15 @@ import com.khangle.mediaplayerapp.databinding.ItemChartHeaderBinding
 import com.khangle.mediaplayerapp.recycleviewadapter.TrackDiff
 import com.khangle.mediaplayerapp.recycleviewadapter.TrackViewHolder
 
-class ChartDetailAdapter(val genre: Genre,val onItemClick: (Track) -> Unit): ListAdapter<Track, RecyclerView.ViewHolder>(TrackDiff) {
+class ChartDetailAdapter(val fragmentManager: FragmentManager,val genre: Genre,val onItemClick: (Track) -> Unit): ListAdapter<Track, RecyclerView.ViewHolder>(TrackDiff) {
     private val ITEM_TYPE = 0
     private val HEADER_TYPE = 1
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return when (viewType) {
-            HEADER_TYPE -> ChartDetailHeaderViewHolder.create(parent, {}) // chua can su dung onHeaderClick vao
-            else -> TrackViewHolder.create(parent, onItemClick)
+            HEADER_TYPE -> ChartDetailHeaderViewHolder.create(
+                parent,
+                {}) // chua can su dung onHeaderClick vao
+            else -> TrackViewHolder.create(fragmentManager,parent, onItemClick)
         }
     }
 

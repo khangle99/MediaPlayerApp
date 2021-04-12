@@ -48,7 +48,7 @@ class TrackSearchFragment() : Fragment() {
 //        textView = binding.noResultTV
         recyclerView = binding.trackSearchRecyclerview
         recyclerView.layoutManager = LinearLayoutManager(context);
-         searchTrackAdapter = TrackPagingAdapter {
+         searchTrackAdapter = TrackPagingAdapter(parentFragmentManager) {
              mainViewModel.play(
                  it.id.toString(),
                  searchTrackAdapter.snapshot().items

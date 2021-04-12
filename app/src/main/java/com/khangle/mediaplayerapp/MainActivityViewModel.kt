@@ -123,5 +123,4 @@ class MainActivityViewModel @Inject constructor(val musicServiceConnection: Musi
        _accessToken.value = token
     }
 
-
 }

@@ -41,7 +41,7 @@ class FavouriteTrackFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         recyclerView = binding.favTrackRecycleview
-        adapter = TrackAdapter {
+        adapter = TrackAdapter(parentFragmentManager) {
             mainViewModel.play(
                 it.id.toString(),
                 adapter.currentList

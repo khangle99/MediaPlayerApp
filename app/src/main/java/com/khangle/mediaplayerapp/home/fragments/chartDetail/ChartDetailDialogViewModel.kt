@@ -1,4 +1,4 @@
-package com.khangle.mediaplayerapp.chartDetail
+package com.khangle.mediaplayerapp.home.fragments.chartDetail
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

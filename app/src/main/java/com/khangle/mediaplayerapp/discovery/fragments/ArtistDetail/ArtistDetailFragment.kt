@@ -64,7 +64,7 @@ class ArtistDetailFragment constructor(val containerId: Int): BaseFragment() { /
                 addToBackStack(null)
             }
         }
-        artistArtistAdapter = ArtistDetailAdapter(artist, artistAdapter){ track ->
+        artistArtistAdapter = ArtistDetailAdapter(parentFragmentManager,artist, artistAdapter){ track ->
             mainViewModel.play(
                 track.id.toString(),
                 artistArtistAdapter.currentList

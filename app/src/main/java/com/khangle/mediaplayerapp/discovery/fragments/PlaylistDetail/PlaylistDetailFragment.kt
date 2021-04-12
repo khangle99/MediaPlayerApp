@@ -36,7 +36,7 @@ class PlaylistDetailFragment constructor(containerId: Int): BaseFragment() {
         arguments?.let {
            playlist =  it.getParcelable("playlist")!!
             binding.playlistTracks.layoutManager = LinearLayoutManager(requireContext())
-            adapter = PlaylistDetailAdapter(playlist){
+            adapter = PlaylistDetailAdapter(parentFragmentManager,playlist){
                 mainViewModel.play(
                     it.id.toString(),
                     adapter.currentList

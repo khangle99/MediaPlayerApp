@@ -46,7 +46,6 @@ class DiscoveryFragment : BaseFragment() {
         super.onViewCreated(view, savedInstanceState)
         childFragmentManager.commit {
             replace(R.id.nav_discovery_fragment, CatalogFragment(), "catalog")
-            addToBackStack("")
         }
         binding.searchView.setOnQueryTextListener(object :
             SearchView.OnQueryTextListener {

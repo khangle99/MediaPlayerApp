@@ -1,14 +1,18 @@
 package com.khangle.mediaplayerapp.discovery.fragments.ArtistDetail
 
 import android.view.ViewGroup
+import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.khangle.mediaplayerapp.data.model.Artist
 import com.khangle.mediaplayerapp.data.model.Track
 import com.khangle.mediaplayerapp.discovery.fragments.searchResult.artistSearchFragment.ArtistAdapter
-import com.khangle.mediaplayerapp.recycleviewadapter.*
+import com.khangle.mediaplayerapp.recycleviewadapter.ArtistFooterViewHolder
+import com.khangle.mediaplayerapp.recycleviewadapter.ArtistHeaderViewHolder
+import com.khangle.mediaplayerapp.recycleviewadapter.TrackDiff
+import com.khangle.mediaplayerapp.recycleviewadapter.TrackViewHolder
 
-class ArtistDetailAdapter(val artist: Artist, val artistAdapter: ArtistAdapter, val onItemClick: (Track) -> Unit) :
+class ArtistDetailAdapter(val fragmentManager: FragmentManager,val artist: Artist, val artistAdapter: ArtistAdapter, val onItemClick: (Track) -> Unit) :
     ListAdapter<Track, RecyclerView.ViewHolder>(TrackDiff) {
     private val ITEM_TYPE = 0
     private val HEADER_TYPE = 1
@@ -18,7 +22,7 @@ class ArtistDetailAdapter(val artist: Artist, val artistAdapter: ArtistAdapter, 
         return when (viewType) {
             HEADER_TYPE -> ArtistHeaderViewHolder.create(parent, {}) // chua truyen bien onHeaderClick vao
             FOOTER_TYPE -> ArtistFooterViewHolder.create(parent, onItemClick)
-            else -> TrackViewHolder.create(parent, onItemClick)
+            else -> TrackViewHolder.create(fragmentManager,parent, onItemClick)
         }
     }
 

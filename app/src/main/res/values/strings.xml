@@ -18,5 +18,7 @@
     <string name="sign_out">Sign out</string>
     <string name="sign_in_btn">Sign In</string>
     <string name="not_signed_msg">You are not signed in</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>

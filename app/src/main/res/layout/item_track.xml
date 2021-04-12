@@ -43,12 +43,12 @@
                 app:subtitle="@{track.artist.name}"
                 app:title="@{track.title}"
                 app:layout_constraintBottom_toBottomOf="@+id/imageView"
-                app:layout_constraintEnd_toStartOf="@+id/imageButton"
+                app:layout_constraintEnd_toStartOf="@+id/more_option"
                 app:layout_constraintStart_toEndOf="@+id/imageView"
                 app:layout_constraintTop_toTopOf="@+id/imageView" />
 
             <android.widget.Button
-                android:id="@+id/imageButton"
+                android:id="@+id/more_option"
                 android:layout_width="15dp"
                 android:layout_height="15dp"
                 android:layout_marginTop="16dp"

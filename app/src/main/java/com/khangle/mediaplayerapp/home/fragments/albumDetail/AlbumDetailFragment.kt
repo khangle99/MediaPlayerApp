@@ -1,4 +1,4 @@
-package com.khangle.mediaplayerapp.newReleaseDetail
+package com.khangle.mediaplayerapp.home.fragments.albumDetail
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -10,10 +10,10 @@ import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.khangle.mediaplayerapp.MainActivityViewModel
 import com.khangle.mediaplayerapp.R
-import com.khangle.mediaplayerapp.chartDetail.BaseFullscreenDialogFragment
 import com.khangle.mediaplayerapp.data.model.Album
 import com.khangle.mediaplayerapp.data.model.Resource
 import com.khangle.mediaplayerapp.databinding.FragmentAlbumDetailBinding
+import com.khangle.mediaplayerapp.home.fragments.chartDetail.BaseFullscreenDialogFragment
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -40,7 +40,7 @@ class AlbumDetailFragment : BaseFullscreenDialogFragment() {
         arguments?.let {
             album= it.getParcelable("album")!!
             viewmodel.loadAlbumTrack(album)
-            adapter = AlbumDetailTrackAdapter(album) {
+            adapter = AlbumDetailTrackAdapter(parentFragmentManager,album) {
                 mainActivityViewModel.play(
                     it.id.toString(),
                     adapter.currentList

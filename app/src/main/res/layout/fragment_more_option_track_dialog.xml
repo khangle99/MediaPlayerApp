@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="track"
+            type="com.khangle.mediaplayerapp.data.model.Track" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:layout_height="match_parent"
+        tools:context=".recycleviewadapter.MoreOptionTrackDialogFragment">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="100dp">
+        <ImageView
+            app:image_url="@{track.album.smalIconUrl}"
+            android:layout_marginLeft="18dp"
+            android:layout_gravity="center_vertical"
+            android:layout_width="80dp"
+            android:layout_height="80dp"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="16dp"
+            android:layout_gravity="center_vertical"
+            android:gravity="center_vertical"
+            app:title="@{track.title}"
+            app:subtitle="@{track.artist.name}"/>
+    </LinearLayout>
+        <Button
+            android:id="@+id/addFavTrack"
+            android:drawableLeft="@mipmap/ic_launcher"
+            android:layout_width="match_parent"
+            android:gravity="fill"
+            android:drawablePadding="10dp"
+            android:text="Add favourite"
+            android:layout_height="80dp"/>
+        <Button
+            android:id="@+id/removeFavTrack"
+            android:drawableLeft="@mipmap/ic_launcher"
+            android:layout_width="match_parent"
+            android:gravity="fill"
+            android:drawablePadding="10dp"
+            android:text="Remove favourite"
+            android:layout_height="80dp"/>
+        <Button
+            android:id="@+id/downloadTrack"
+            android:drawableLeft="@mipmap/ic_launcher"
+            android:layout_width="match_parent"
+            android:gravity="fill"
+            android:drawablePadding="10dp"
+            android:text="Download"
+            android:layout_height="80dp"/>
+        <Button
+            android:id="@+id/shareTrack"
+            android:drawableLeft="@mipmap/ic_launcher"
+            android:layout_width="match_parent"
+            android:gravity="fill"
+            android:drawablePadding="10dp"
+            android:text="Share"
+            android:layout_height="80dp"/>
+
+
+    </LinearLayout>
+</layout>

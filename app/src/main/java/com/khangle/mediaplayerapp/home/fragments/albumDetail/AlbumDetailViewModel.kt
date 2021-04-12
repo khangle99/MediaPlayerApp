@@ -1,4 +1,4 @@
-package com.khangle.mediaplayerapp.newReleaseDetail
+package com.khangle.mediaplayerapp.home.fragments.albumDetail
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

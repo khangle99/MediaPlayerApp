@@ -14,7 +14,7 @@
             android:id="@+id/albumTrack"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            tools:context=".newReleaseDetail.AlbumDetailFragment"/>
+            tools:context=".home.fragments.albumDetail.AlbumDetailFragment"/>
         <ProgressBar
             android:layout_gravity="center"
             android:indeterminate="true"

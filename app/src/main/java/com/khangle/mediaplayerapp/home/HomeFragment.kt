@@ -11,17 +11,16 @@ import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.khangle.mediaplayerapp.BaseFragment
 import com.khangle.mediaplayerapp.MainActivityViewModel
 import com.khangle.mediaplayerapp.R
-import com.khangle.mediaplayerapp.chartDetail.ChartDetailDialogFragment
 import com.khangle.mediaplayerapp.databinding.FragmentHomeBinding
 import com.khangle.mediaplayerapp.discovery.fragments.catalog.GenreAdapter
 import com.khangle.mediaplayerapp.home.adapter.ChartAlbumAdapter
-import com.khangle.mediaplayerapp.newReleaseDetail.AlbumDetailFragment
+import com.khangle.mediaplayerapp.home.fragments.albumDetail.AlbumDetailFragment
+import com.khangle.mediaplayerapp.home.fragments.chartDetail.ChartDetailDialogFragment
 import com.khangle.mediaplayerapp.recycleviewadapter.TrackAdapter
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -65,6 +64,7 @@ class HomeFragment : BaseFragment() {
             albumDetailFragment.arguments = bundleOf("album" to it)
             albumDetailFragment.show(parentFragmentManager, "albumDetail")
         }
+
         binding.newReleaseAlbums.adapter = newReleaseAlbumAdapter
         binding.newReleaseAlbums.layoutManager = LinearLayoutManager(
             requireContext(),
@@ -77,51 +77,51 @@ class HomeFragment : BaseFragment() {
             chartDetailDialogFragment.arguments = bundle
             chartDetailDialogFragment.show(parentFragmentManager, "chartDetail")
         }
+
         binding.chartGenre.adapter = chartGenreAdapter
         binding.chartGenre.layoutManager = LinearLayoutManager(
             requireContext(),
             RecyclerView.HORIZONTAL,
             false
         )
-        suggestionTrackAdapter = TrackAdapter(onItemClick = { track ->
+        suggestionTrackAdapter = TrackAdapter(fragmentManager = parentFragmentManager) { track ->
             Log.i(TAG, "onViewCreated: click")
             mainViewmodel.play(
                 track.id.toString(),
                 homeViewModel.suggestionTracks.value!!
             ) // !! la vi phai co item moi click dc, sure
-        })
+        }
+
         binding.tracksChart.layoutManager = LinearLayoutManager(requireContext())
         binding.tracksChart.adapter = suggestionTrackAdapter
         binding.tracksChart.isNestedScrollingEnabled = false
-        homeViewModel.suggestionTracks.observe(requireActivity(), Observer {
+        homeViewModel.suggestionTracks.observe(requireActivity())  {
             if (it.size > 0) {
                 suggestionTrackAdapter.submitList(it)
                 binding.swipeRefresh.isRefreshing = false
             }
-        })
+        }
 
-        homeViewModel.genreList.observe(viewLifecycleOwner, {
+        homeViewModel.genreList.observe(viewLifecycleOwner) {
             chartGenreAdapter.submitList(it)
-        })
-        homeViewModel.newReleaseAlbums.observe(viewLifecycleOwner, {
+        }
+
+        homeViewModel.newReleaseAlbums.observe(viewLifecycleOwner) {
             newReleaseAlbumAdapter.submitList(it)
-        })
+        }
 
         binding.swipeRefresh.setOnRefreshListener {
             homeViewModel.refresh()
         }
-        homeViewModel.error.observe(viewLifecycleOwner, {
+
+        homeViewModel.error.observe(viewLifecycleOwner) {
             Toast.makeText(requireContext(), it, Toast.LENGTH_SHORT).show()
-        })
+        }
 
-        homeViewModel.isLoading.observe(viewLifecycleOwner, {
+        homeViewModel.isLoading.observe(viewLifecycleOwner) {
             binding.homeProgress.isVisible = it
-        })
-
+        }
     }
-
-
-
 }
 
 const val PLAYLISTID = "PLAYLISTID"
