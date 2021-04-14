@@ -190,6 +190,10 @@ class MainActivity : AppCompatActivity() {
         binding.previ.setOnClickListener {
             mainActivityViewModel.previous()
         }
+
+        binding.moreOptionMain.setOnClickListener {
+            TimeOffDialogFragment().show(supportFragmentManager,null)
+        }
     }
 
     private fun setSeekbarListener() {

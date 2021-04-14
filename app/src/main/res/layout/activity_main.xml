@@ -81,6 +81,19 @@
                     app:indicatorColor="@color/exo_white"
                     android:progressTint="@color/exo_white" />
 
+                <android.widget.Button
+                    android:id="@+id/more_option_main"
+                    android:layout_width="15dp"
+                    android:layout_height="15dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginBottom="13dp"
+                    app:layout_constraintBottom_toBottomOf="@+id/artist_name"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toEndOf="@+id/artist_name"
+                    app:layout_constraintTop_toTopOf="@+id/artist_name"
+                    android:background="@drawable/ic_alarm_clock" />
+
                 <ImageView
                     android:id="@+id/artwork"
                     android:scaleType="fitXY"

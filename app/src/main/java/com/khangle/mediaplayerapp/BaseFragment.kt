@@ -15,10 +15,11 @@ abstract class BaseFragment : Fragment() {
     val filter = IntentFilter().also {
         it.addAction("android.net.conn.CONNECTIVITY_CHANGE")
     }
+
     abstract fun refresh()
     override fun onResume() {
         super.onResume()
-       requireContext().registerReceiver(networkReceiver, filter)
+        requireContext().registerReceiver(networkReceiver, filter)
     }
 
     override fun onPause() {
@@ -32,7 +33,7 @@ abstract class BaseFragment : Fragment() {
         override fun onReceive(context: Context, intent: Intent) {
             val status = NetworkUtil.getConnectivityStatusString(context)
             if ("android.net.conn.CONNECTIVITY_CHANGE" == intent.action) {
-                if (!isFirstLoad && (status == NetworkUtil.NETWORK_STATUS_WIFI ||status == NetworkUtil.NETWORK_STATUS_MOBILE)) {
+                if (!isFirstLoad && (status == NetworkUtil.NETWORK_STATUS_WIFI || status == NetworkUtil.NETWORK_STATUS_MOBILE)) {
                     refresh()
                 } else {
                     isFirstLoad = false

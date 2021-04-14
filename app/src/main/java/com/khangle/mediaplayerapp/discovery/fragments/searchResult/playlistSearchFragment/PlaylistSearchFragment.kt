@@ -10,13 +10,11 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.commit
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.NavController
 import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.khangle.mediaplayerapp.R
 import com.khangle.mediaplayerapp.databinding.FragmentPlaylistSearchBinding
-import com.khangle.mediaplayerapp.discovery.fragments.ArtistDetail.ArtistDetailFragment
 import com.khangle.mediaplayerapp.discovery.fragments.PlaylistDetail.PlaylistDetailFragment
 import com.khangle.mediaplayerapp.discovery.fragments.searchResult.SearchResultFragment
 import com.khangle.mediaplayerapp.discovery.fragments.searchResult.SearchResultViewModel
@@ -48,6 +46,7 @@ class PlaylistSearchFragment : Fragment() {
         playlistAdapter = PlaylistPagingAdapter { playlist ->
             val bundle = bundleOf("playlist" to playlist)
             requireParentFragment().parentFragmentManager.commit {
+                setCustomAnimations(R.anim.slide_in,R.anim.fade_out, R.anim.fade_in, R.anim.slide_out)
                 replace(
                     R.id.nav_discovery_fragment,
                     PlaylistDetailFragment(R.id.nav_discovery_fragment).also {

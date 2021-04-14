@@ -258,6 +258,7 @@ class MusicService : MediaBrowserServiceCompat() {
 
 
                 //    registerReceiver(myNoisyAudioStreamReceiver, intentFilter)
+                    registerReceiver(timeOffReceiver, timeOffIntentFilter)
             }
 
 
@@ -338,6 +339,7 @@ class MusicService : MediaBrowserServiceCompat() {
             super.onStop()
 
             //  unregisterReceiver(myNoisyAudioStreamReceiver)
+              unregisterReceiver(timeOffReceiver)
         }
 
 
@@ -446,7 +448,10 @@ class MusicService : MediaBrowserServiceCompat() {
 
     private val intentFilter =
         IntentFilter(AudioManager.ACTION_AUDIO_BECOMING_NOISY) // intent filter nhan su kien noisy
+    private val timeOffIntentFilter =
+        IntentFilter(TIME_OFF_ACTION) // intent filter nhan su kien noisy
     private val myNoisyAudioStreamReceiver = BecomingNoisyReceiver()
+    private val timeOffReceiver = TimeOffBroadcastReceiver()
 
     private inner class BecomingNoisyReceiver : BroadcastReceiver() {
 
@@ -457,9 +462,21 @@ class MusicService : MediaBrowserServiceCompat() {
         }
     }
 
+    inner class TimeOffBroadcastReceiver: BroadcastReceiver() {
+        override fun onReceive(context: Context?, intent: Intent?) {
+            if (intent?.action == TIME_OFF_ACTION) {
+                currentPlayer.stop(/* reset= */true) // tat khi bao thuc tac nhac
+
+
+            }
+
+        }
+
+    }
+
 }
 
-
+const val TIME_OFF_ACTION = "com.khangle.mediaplayer.timeoffaction"
 private const val UAMP_USER_AGENT = "useragent" // user agent
 private const val TAG = "MusicService"
 

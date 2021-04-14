@@ -53,6 +53,7 @@ class ArtistSearchFragment : Fragment() {
         artistPagingAdapter = ArtistPagingAdapter { artist ->
             val bundle = bundleOf("artist" to artist)
             requireParentFragment().parentFragmentManager.commit {
+                setCustomAnimations(R.anim.slide_in,R.anim.fade_out, R.anim.fade_in, R.anim.slide_out)
                 replace(
                     R.id.nav_discovery_fragment,
                     ArtistDetailFragment(R.id.nav_discovery_fragment).also {

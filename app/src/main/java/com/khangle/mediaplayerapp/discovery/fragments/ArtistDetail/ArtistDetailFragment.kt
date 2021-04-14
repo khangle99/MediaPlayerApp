@@ -22,7 +22,9 @@ import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class ArtistDetailFragment constructor(val containerId: Int): BaseFragment() { // su dung 2 noi sau khi click search va click vao favourtite artist
-
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+    }
     lateinit var binding: FragmentArtistDetailBinding
     private val artistDetailViewmodel: ArtistDetailViewModel by viewModels()
     private val mainViewModel: MainActivityViewModel by viewModels()
@@ -53,9 +55,11 @@ class ArtistDetailFragment constructor(val containerId: Int): BaseFragment() { /
         artistDetailViewmodel.loadTrackAndRelateArtist(artist.id.toString())
 
         artistTrackRecyclerView = binding.artistTrackList
+        // nested ==> refactor
         artistAdapter = ArtistAdapter{ artist ->
             val bundle = bundleOf("artist" to artist)
             parentFragmentManager.commit {
+                setCustomAnimations(R.anim.slide_in,R.anim.fade_out, R.anim.fade_in, R.anim.slide_out)
                 replace(
                     containerId,
                     ArtistDetailFragment(containerId).also { it.arguments = bundle },

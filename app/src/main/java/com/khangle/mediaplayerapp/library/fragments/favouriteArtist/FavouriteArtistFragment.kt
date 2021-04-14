@@ -48,6 +48,7 @@ class FavouriteArtistFragment : BaseFragment() {
         adapter = ArtistAdapter { artist ->
             val bundle = bundleOf("artist" to artist)
            parentFragmentManager.commit {
+               setCustomAnimations(R.anim.slide_in,R.anim.fade_out, R.anim.fade_in, R.anim.slide_out)
                setReorderingAllowed(true)
                 replace(
                     R.id.libraryHost,
