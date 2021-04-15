@@ -70,7 +70,7 @@ class ArtistDetailFragment constructor(val containerId: Int): BaseFragment() { /
         }
         artistArtistAdapter = ArtistDetailAdapter(parentFragmentManager,artist, artistAdapter){ track ->
             mainViewModel.play(
-                track.id.toString(),
+                track,
                 artistArtistAdapter.currentList
             )
         }

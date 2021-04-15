@@ -38,7 +38,7 @@ class PlaylistDetailFragment constructor(containerId: Int): BaseFragment() {
             binding.playlistTracks.layoutManager = LinearLayoutManager(requireContext())
             adapter = PlaylistDetailAdapter(parentFragmentManager,playlist){
                 mainViewModel.play(
-                    it.id.toString(),
+                    it,
                     adapter.currentList
                     )
             }

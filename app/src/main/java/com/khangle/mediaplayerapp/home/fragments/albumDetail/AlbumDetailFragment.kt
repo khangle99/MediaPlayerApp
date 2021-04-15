@@ -42,7 +42,7 @@ class AlbumDetailFragment : BaseFullscreenDialogFragment() {
             viewmodel.loadAlbumTrack(album)
             adapter = AlbumDetailTrackAdapter(parentFragmentManager,album) {
                 mainActivityViewModel.play(
-                    it.id.toString(),
+                    it,
                     adapter.currentList
                 )
             }

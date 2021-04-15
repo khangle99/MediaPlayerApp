@@ -3,10 +3,7 @@ package com.khangle.mediaplayerapp.di
 import android.content.ComponentName
 import android.content.Context
 import com.khangle.mediaplayerapp.data.network.okhttp.NetworkConnectionInterceptor
-import com.khangle.mediaplayerapp.data.network.retrofit.BaseWebservice
-import com.khangle.mediaplayerapp.data.network.retrofit.DeezerBaseUserService
-import com.khangle.mediaplayerapp.data.network.retrofit.DeezerService
-import com.khangle.mediaplayerapp.data.network.retrofit.DeezerUserService
+import com.khangle.mediaplayerapp.data.network.retrofit.*
 import com.khangle.mediaplayerapp.media.MusicService
 import com.khangle.mediaplayerapp.media.MusicServiceConnection
 import dagger.Module
@@ -46,6 +43,15 @@ object ApplicationModule {
 
     @Provides
     @Singleton
+    fun provideMMService(okHttpClient: OkHttpClient): MMBaseWebService {
+        return Retrofit.Builder().baseUrl("https://api.musixmatch.com/ws/1.1/")
+            .addConverterFactory(GsonConverterFactory.create())
+            .client(okHttpClient)
+            .build().create(MMWebservice::class.java)
+    }
+
+    @Provides
+    @Singleton
     fun provideOkhttpCLient(@ApplicationContext context: Context): OkHttpClient {
         val logging = HttpLoggingInterceptor()
         logging.setLevel(HttpLoggingInterceptor.Level.BASIC)
@@ -54,7 +60,6 @@ object ApplicationModule {
                 .addInterceptor(logging)
                 .readTimeout(60, TimeUnit.SECONDS)
                 .connectTimeout(60, TimeUnit.SECONDS).build()
-
     }
 
 

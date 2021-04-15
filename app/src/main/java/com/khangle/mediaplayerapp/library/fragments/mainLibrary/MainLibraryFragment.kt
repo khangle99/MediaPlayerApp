@@ -78,7 +78,7 @@ class MainLibraryFragment : BaseFragment() {
         recommendTrackRecyclerView = binding.recommentTrack
         recommendTrackAdapter = TrackAdapter(parentFragmentManager) {
             mainActivityViewModel.play(
-                it.id.toString(),
+                it,
                 recommendTrackAdapter.currentList
             )
         }

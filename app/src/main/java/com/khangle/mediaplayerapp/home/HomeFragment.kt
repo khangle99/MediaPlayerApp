@@ -87,7 +87,7 @@ class HomeFragment : BaseFragment() {
         suggestionTrackAdapter = TrackAdapter(fragmentManager = parentFragmentManager) { track ->
             Log.i(TAG, "onViewCreated: click")
             mainViewmodel.play(
-                track.id.toString(),
+                track,
                 homeViewModel.suggestionTracks.value!!
             ) // !! la vi phai co item moi click dc, sure
         }

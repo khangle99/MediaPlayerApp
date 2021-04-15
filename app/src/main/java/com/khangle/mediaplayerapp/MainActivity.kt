@@ -15,6 +15,7 @@ import android.widget.ToggleButton
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.motion.widget.MotionLayout
+import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.commit
@@ -111,6 +112,10 @@ class MainActivity : AppCompatActivity() {
             }
         })
         mainActivityViewModel.state.observe(this, observer)
+
+        mainActivityViewModel.lyricCurrentTrackLyric.observe(this, Observer {
+            binding.lyricShow.isEnabled = !it.equals("")
+        })
     }
 
     val observer = Observer<PlaybackStateCompat> {
@@ -163,12 +168,15 @@ class MainActivity : AppCompatActivity() {
         setBottomSheetCallback(bottomState)
 
         binding.shuffle.setOnClickListener {
-
             if ((it as ToggleButton).isChecked) {
                 mainActivityViewModel.setShuffle(Shuffle.ON.value)
             } else {
                 mainActivityViewModel.setShuffle(Shuffle.OFF.value)
             }
+        }
+
+        binding.lyricShow.setOnClickListener {
+            LyricBottomSheetFragment(mainActivityViewModel.lyricCurrentTrackLyric.value!!).show(supportFragmentManager,null)
         }
         binding.repeat.setOnClickListener {
             when ((it as RepeatButton).state) {

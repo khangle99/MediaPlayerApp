@@ -5,44 +5,45 @@
         motion:constraintSetStart="@+id/start"
         motion:constraintSetEnd="@+id/end"
         motion:duration="200">
-<!--        <OnClick-->
-<!--            motion:touchAnchorId="@+id/motionLay"-->
-<!--            motion:touchAnchorSide="top"-->
-<!--             />-->
-<!--        <OnSwipe-->
-<!--            motion:touchAnchorId="@+id/motionLay"-->
-<!--            motion:touchAnchorSide="top"-->
-<!--            motion:dragDirection="dragUp"-->
-<!--             />-->
+        <!--        <OnClick-->
+        <!--            motion:touchAnchorId="@+id/motionLay"-->
+        <!--            motion:touchAnchorSide="top"-->
+        <!--             />-->
+        <!--        <OnSwipe-->
+        <!--            motion:touchAnchorId="@+id/motionLay"-->
+        <!--            motion:touchAnchorSide="top"-->
+        <!--            motion:dragDirection="dragUp"-->
+        <!--             />-->
     </Transition>
 
     <ConstraintSet android:id="@+id/start">
         <Constraint
             android:id="@+id/next"
-            android:visibility="invisible"/>
+            android:visibility="invisible" />
         <Constraint
             android:id="@+id/previ"
-            android:visibility="invisible"/>
+            android:visibility="invisible" />
         <Constraint
             android:id="@+id/shuffle"
-            android:visibility="invisible"/>
+            android:visibility="invisible" />
         <Constraint
             android:id="@+id/repeat"
-            android:visibility="invisible"/>
+            android:visibility="invisible" />
         <Constraint
             android:id="@+id/bkg_view"
-            android:visibility="invisible">
-        </Constraint>
+            android:visibility="invisible"></Constraint>
         <Constraint
             android:id="@+id/bkg_view2"
             android:layout_height="60dp"
             motion:layout_constraintTop_toTopOf="parent"
-            android:layout_width="match_parent">
-        </Constraint>
+            android:layout_width="match_parent"></Constraint>
         <Constraint
             android:id="@+id/more_option_main"
-            android:visibility="invisible">
-        </Constraint>
+            android:visibility="invisible"></Constraint>
+        <Constraint
+            android:id="@+id/lyric_show"
+            android:visibility="invisible" />
+
 
         <Constraint
             android:id="@+id/button"
@@ -51,8 +52,7 @@
             motion:layout_constraintTop_toTopOf="parent"
             motion:layout_constraintEnd_toEndOf="parent"
             android:layout_marginEnd="16dp"
-            android:layout_marginTop="16dp"
-             />
+            android:layout_marginTop="16dp" />
         <Constraint
             android:id="@+id/artwork"
             android:layout_width="48dp"
@@ -60,8 +60,7 @@
             motion:layout_constraintLeft_toLeftOf="parent"
             motion:layout_constraintTop_toTopOf="parent"
             android:layout_marginLeft="16dp"
-            android:layout_marginTop="8dp"
-            />
+            android:layout_marginTop="8dp" />
 
         <Constraint
             android:id="@+id/trackName"
@@ -78,8 +77,7 @@
 
         <Constraint
             android:id="@+id/trackNameBig"
-            android:visibility="invisible">
-        </Constraint>
+            android:visibility="invisible"></Constraint>
 
         <Constraint
             android:id="@+id/progressBar"
@@ -87,19 +85,17 @@
             android:layout_height="wrap_content"
             motion:layout_constraintLeft_toLeftOf="parent"
             motion:layout_constraintRight_toRightOf="parent"
-            motion:layout_constraintTop_toTopOf="parent"
-           >
-        </Constraint>
+            motion:layout_constraintTop_toTopOf="parent"></Constraint>
 
         <Constraint
             android:id="@+id/trackSeek"
-            android:visibility="invisible"/>
+            android:visibility="invisible" />
         <Constraint
             android:id="@+id/current"
-            android:visibility="invisible"/>
+            android:visibility="invisible" />
         <Constraint
             android:id="@+id/trackTime"
-            android:visibility="invisible"/>
+            android:visibility="invisible" />
     </ConstraintSet>
 
     <ConstraintSet android:id="@+id/end">
@@ -109,12 +105,10 @@
             android:layout_marginTop="30dp"
             motion:layout_constraintTop_toBottomOf="@id/trackNameBig"
             motion:layout_constraintBottom_toBottomOf="parent"
-            android:layout_width="match_parent">
-        </Constraint>
+            android:layout_width="match_parent" />
         <Constraint
             android:id="@+id/bkg_view2"
-            android:visibility="invisible">
-        </Constraint>
+            android:visibility="invisible" />
 
         <Constraint
             android:id="@+id/more_option_main"
@@ -123,8 +117,16 @@
             motion:layout_constraintLeft_toLeftOf="parent"
             motion:layout_constraintBottom_toBottomOf="parent"
             android:layout_marginLeft="18dp"
-            android:layout_marginBottom="18dp"
-            />
+            android:layout_marginBottom="18dp" />
+
+        <Constraint
+            android:id="@+id/lyric_show"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            motion:layout_constraintRight_toRightOf="parent"
+            motion:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginRight="18dp"
+            android:layout_marginBottom="18dp" />
         <Constraint
             android:id="@+id/artwork"
             android:layout_width="256dp"
@@ -135,12 +137,11 @@
             android:layout_marginRight="8dp"
             android:layout_marginTop="64dp"
             motion:layout_constraintRight_toRightOf="parent"
-            motion:layout_constraintHorizontal_bias="0.5"
-            />
+            motion:layout_constraintHorizontal_bias="0.5" />
 
         <Constraint
             android:id="@+id/trackName"
-            android:visibility="invisible"/>
+            android:visibility="invisible" />
         <Constraint
             android:id="@+id/trackNameBig"
             android:visibility="visible"
@@ -152,10 +153,10 @@
             android:layout_marginLeft="8dp"
             android:layout_marginRight="8dp"
             android:layout_marginTop="8dp"
-            motion:layout_constraintHorizontal_bias="0.5"/>
+            motion:layout_constraintHorizontal_bias="0.5" />
         <Constraint
             android:id="@+id/progressBar"
-            android:visibility="invisible"/>
+            android:visibility="invisible" />
 
         <!-- seekbar + time-->
         <Constraint
@@ -167,7 +168,7 @@
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
             motion:layout_constraintBottom_toTopOf="@id/button"
-            android:layout_marginBottom="16dp"/>
+            android:layout_marginBottom="16dp" />
         <Constraint
             android:id="@+id/current"
             android:visibility="visible"
@@ -175,7 +176,7 @@
             android:layout_height="wrap_content"
             motion:layout_constraintLeft_toLeftOf="parent"
             motion:layout_constraintBottom_toTopOf="@id/button"
-            android:layout_marginBottom="16dp"/>
+            android:layout_marginBottom="16dp" />
         <Constraint
             android:id="@+id/trackTime"
             android:visibility="visible"
@@ -183,7 +184,7 @@
             android:layout_marginRight="16dp"
             motion:layout_constraintRight_toRightOf="parent"
             motion:layout_constraintBottom_toTopOf="@id/button"
-            android:layout_marginBottom="16dp"/>
+            android:layout_marginBottom="16dp" />
 
         <!-- 5 button-->
 
@@ -203,7 +204,7 @@
             motion:layout_constraintEnd_toStartOf="@id/button"
             motion:layout_constraintBottom_toBottomOf="parent"
             motion:layout_constraintBaseline_toBaselineOf="@id/shuffle"
-            motion:layout_constraintStart_toEndOf="@id/shuffle"/>
+            motion:layout_constraintStart_toEndOf="@id/shuffle" />
 
         <Constraint
             android:id="@+id/button"
@@ -212,7 +213,7 @@
             android:layout_marginBottom="90dp"
             motion:layout_constraintBottom_toBottomOf="parent"
             motion:layout_constraintEnd_toStartOf="@id/next"
-            motion:layout_constraintStart_toEndOf="@id/previ"/>
+            motion:layout_constraintStart_toEndOf="@id/previ" />
 
         <Constraint
             android:id="@+id/next"
@@ -220,17 +221,15 @@
             android:layout_width="20dp"
             motion:layout_constraintStart_toEndOf="@id/button"
             motion:layout_constraintBaseline_toBaselineOf="@id/shuffle"
-            motion:layout_constraintEnd_toStartOf="@id/repeat"
-            />
+            motion:layout_constraintEnd_toStartOf="@id/repeat" />
         <Constraint
             android:id="@+id/repeat"
             android:layout_height="20dp"
             android:layout_width="20dp"
-
             motion:layout_constraintEnd_toEndOf="parent"
             motion:layout_constraintBottom_toBottomOf="parent"
             android:layout_marginBottom="100dp"
-            motion:layout_constraintStart_toEndOf="@id/next"/>
+            motion:layout_constraintStart_toEndOf="@id/next" />
 
     </ConstraintSet>
 

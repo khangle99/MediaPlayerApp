@@ -43,7 +43,7 @@ class FavouriteTrackFragment : BaseFragment() {
         recyclerView = binding.favTrackRecycleview
         adapter = TrackAdapter(parentFragmentManager) {
             mainViewModel.play(
-                it.id.toString(),
+                it,
                 adapter.currentList
             )
         }

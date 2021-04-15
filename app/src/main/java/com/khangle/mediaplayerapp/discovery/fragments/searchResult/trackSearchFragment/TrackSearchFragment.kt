@@ -50,7 +50,7 @@ class TrackSearchFragment() : Fragment() {
         recyclerView.layoutManager = LinearLayoutManager(context);
          searchTrackAdapter = TrackPagingAdapter(parentFragmentManager) {
              mainViewModel.play(
-                 it.id.toString(),
+                 it,
                  searchTrackAdapter.snapshot().items
              )
         }

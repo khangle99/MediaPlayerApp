@@ -56,7 +56,7 @@ class ChartDetailDialogFragment : BaseFullscreenDialogFragment() {
             viewmodel.loadChartTracks(genre.id)
             adapter = ChartDetailAdapter(parentFragmentManager,genre) {
                 mainActivityViewModel.play(
-                    it.id.toString(),
+                    it,
                     adapter.currentList
                 )
             }
