@@ -1,14 +1,17 @@
 # Media Player App
 
-Demo project for learn android development. Browse and play music with Deezer API and MusixMatch API. Mediasession, MVVM, Databinding,...
-
+Demo project for learning android development. Browse and play music with Deezer API and MusixMatch API. Mediasession, MVVM, Databinding,...
+- Project for Learning Android Developement
+- Use [Deezer API](https://developers.deezer.com/api) with [MusixMath](https://developer.musixmatch.com/)
+-  Android Jetpack
+-  Kotlin Coroutine
 
 ## Screenshots
 
-![Alt text](https://firebasestorage.googleapis.com/v0/b/maindevkhangle.appspot.com/o/musicplayer_home.png?alt=media&token=ecb88d2d-9ea6-4382-86aa-e37e68c4b284)
-![Alt text](https://firebasestorage.googleapis.com/v0/b/maindevkhangle.appspot.com/o/musicplayer_search.png?alt=media&token=70cbe65e-e849-421d-be5f-e99074e827c9)
-![Alt text](https://firebasestorage.googleapis.com/v0/b/maindevkhangle.appspot.com/o/musicplayer_play.png?alt=media&token=f270cd89-2b56-4c17-b3fe-a54a4e4f785c)
-![Alt text](https://firebasestorage.googleapis.com/v0/b/maindevkhangle.appspot.com/o/musicplayer_library.png?alt=media&token=0956d0e9-9381-403a-b2ef-b40f3f6f0062)
+![Home](https://github.com/khangle99/MediaPlayerApp/blob/dev/screenshots/musicplayer_home.png)
+![Search](https://github.com/khangle99/MediaPlayerApp/blob/dev/screenshots/musicplayer_search.png)
+![Play](https://github.com/khangle99/MediaPlayerApp/blob/dev/screenshots/musicplayer_play.png)
+![Library](https://github.com/khangle99/MediaPlayerApp/blob/dev/screenshots/musicplayer_library.png)
 
 ## Libraries Used
 [Retrofit](https://square.github.io/retrofit/)
