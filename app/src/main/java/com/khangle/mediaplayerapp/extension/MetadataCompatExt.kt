@@ -215,6 +215,13 @@ inline var MediaMetadataCompat.Builder.displayIconUri: String?
         putString(MediaMetadataCompat.METADATA_KEY_DISPLAY_ICON_URI, value)
     }
 
+inline var MediaMetadataCompat.Builder.audioSessionId: Int
+    @Deprecated(NO_GET, level = DeprecationLevel.ERROR)
+    get() = throw IllegalAccessException("Cannot get from MediaMetadataCompat.Builder")
+    set(value) {
+        putLong("audioSessionId", value.toLong())
+    }
+
 inline var MediaMetadataCompat.Builder.downloadStatus: Long
     @Deprecated(NO_GET, level = DeprecationLevel.ERROR)
     get() = throw IllegalAccessException("Cannot get from MediaMetadataCompat.Builder")

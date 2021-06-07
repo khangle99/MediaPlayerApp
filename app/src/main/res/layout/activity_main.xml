@@ -107,9 +107,9 @@
                     app:layout_constraintTop_toTopOf="@+id/artist_name"
                     android:background="@drawable/ic_lyrics" />
 
-                <ImageView
+                <de.hdodenhof.circleimageview.CircleImageView
                     android:id="@+id/artwork"
-                    android:scaleType="fitXY"
+
                     app:image_url="@{track.album.coverUrl}"
                     android:layout_width="30dp"
                     android:layout_height="50dp" />
@@ -134,6 +134,16 @@
                     android:textSize="20sp"
                     android:text="Track name \n track artist"
                     android:layout_height="50dp" />
+
+                <com.gauravk.audiovisualizer.visualizer.BarVisualizer
+                    xmlns:custom="http://schemas.android.com/apk/res-auto"
+                    android:id="@+id/visualizer"
+                    custom:avDensity="0.2"
+                    custom:avColor="@color/white"
+                    custom:avType="outline"
+                    custom:avSpeed="normal"
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp"/>
 
                 <com.khangle.mediaplayerapp.customview.PlayButton
                     android:id="@+id/button"

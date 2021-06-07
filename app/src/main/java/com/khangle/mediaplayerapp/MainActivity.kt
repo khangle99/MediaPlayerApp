@@ -1,7 +1,9 @@
 package com.khangle.mediaplayerapp
 
+import android.Manifest
 import android.animation.ValueAnimator
 import android.annotation.SuppressLint
+import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.Color
 import android.graphics.drawable.BitmapDrawable
@@ -10,16 +12,20 @@ import android.os.Bundle
 import android.support.v4.media.session.PlaybackStateCompat
 import android.util.Log
 import android.view.View
+import android.view.animation.Animation
+import android.view.animation.AnimationUtils
 import android.widget.SeekBar
 import android.widget.ToggleButton
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.motion.widget.MotionLayout
-import androidx.core.view.isVisible
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.commit
 import androidx.lifecycle.Observer
+import com.gauravk.audiovisualizer.visualizer.BarVisualizer
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.khangle.mediaplayerapp.customview.PlayButton
 import com.khangle.mediaplayerapp.customview.RepeatButton
@@ -42,6 +48,7 @@ class MainActivity : AppCompatActivity() {
     val mainActivityViewModel: MainActivityViewModel by viewModels()
     lateinit var motionLayout: MotionLayout
     lateinit var bottomMotionLayout: MotionLayout
+    lateinit var visualizer: BarVisualizer
 
     private val homeFragment=  HomeFragment()
     private val discoveryFragment= DiscoveryFragment()
@@ -50,15 +57,20 @@ class MainActivity : AppCompatActivity() {
     @SuppressLint("RestrictedApi")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         supportFragmentManager.commit {
-            add(R.id.nav_host_fragment, homeFragment, "")
-            add(R.id.nav_host_fragment, discoveryFragment)
-            add(R.id.nav_host_fragment, libraryFragment)
+            add(com.khangle.mediaplayerapp.R.id.nav_host_fragment, homeFragment, "")
+            add(com.khangle.mediaplayerapp.R.id.nav_host_fragment, discoveryFragment)
+            add(com.khangle.mediaplayerapp.R.id.nav_host_fragment, libraryFragment)
             hide(discoveryFragment)
             hide(libraryFragment)
         }
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
+
+        binding = DataBindingUtil.setContentView(this, com.khangle.mediaplayerapp.R.layout.activity_main)
         binding.setLifecycleOwner(this)
+        visualizer = binding.visualizer
+        requestPermission()
+
         binding.navView.setOnNavigationItemSelectedListener {
             var newFragment: Fragment? = null
             var currentFragment: Fragment? = null
@@ -70,10 +82,10 @@ class MainActivity : AppCompatActivity() {
              else -> currentFragment = libraryFragment
          }
             when (it.itemId) {
-                R.id.navigation_home -> {
+                com.khangle.mediaplayerapp.R.id.navigation_home -> {
                     newFragment = homeFragment
                 }
-                R.id.navigation_discovery -> {
+                com.khangle.mediaplayerapp.R.id.navigation_discovery -> {
                     newFragment = discoveryFragment
                 }
                 else -> {
@@ -105,10 +117,16 @@ class MainActivity : AppCompatActivity() {
         mainActivityViewModel.metadata.observe(this, {
             // convert sang track de UI de su dung
             if (!it.description.mediaId.equals("")) {
+
                 motionLayout.visibility = View.VISIBLE
                 binding.track = it.toTrack()
                 binding.progressBar.progress = 0
                 binding.trackSeek.progress = 0
+
+                if (checkPermission()) {
+                    visualizer.setAudioSessionId(it.getLong("audioSessionId").toInt())
+                }
+
             }
         })
         mainActivityViewModel.state.observe(this, observer)
@@ -117,7 +135,22 @@ class MainActivity : AppCompatActivity() {
             binding.lyricShow.isEnabled = !it.equals("")
         })
     }
+    fun checkPermission(): Boolean {
+        val result = ContextCompat.checkSelfPermission(
+            this,
+            Manifest.permission.RECORD_AUDIO
+        )
+        return result == PackageManager.PERMISSION_GRANTED
+    }
 
+    fun requestPermission() {
+        ActivityCompat.requestPermissions(
+            this,
+            arrayOf(Manifest.permission.RECORD_AUDIO),
+            100
+        )
+    }
+    var isRotate = false
     val observer = Observer<PlaybackStateCompat> {
         if (it.state == PlaybackStateCompat.STATE_PLAYING) {
             binding.trackSeek.progress = it.position.toInt()
@@ -126,6 +159,11 @@ class MainActivity : AppCompatActivity() {
             val time = timeToString(progress)
             binding.current.text = time
             binding.button.isPlaying = true
+            val rotateAnimation: Animation = AnimationUtils.loadAnimation(this, R.anim.rotate)
+            if (!isRotate) {
+                binding.artwork.startAnimation(rotateAnimation)
+                isRotate = true
+            }
         } else if (it.state != PlaybackStateCompat.STATE_NONE && it.state != PlaybackStateCompat.STATE_PLAYING) {
 
         } else {
@@ -152,10 +190,17 @@ class MainActivity : AppCompatActivity() {
                 // phat nhac
                 // play -> pause icon
                 mainActivityViewModel.play()
+                val rotateAnimation: Animation = AnimationUtils.loadAnimation(this, R.anim.rotate)
+                if (!isRotate) {
+                    binding.artwork.startAnimation(rotateAnimation)
+                    isRotate = true
+                }
             } else {
                 // pause nhac
                 // pause -> play
                 mainActivityViewModel.pause()
+                isRotate = false
+                binding.artwork.clearAnimation()
             }
         }
 
@@ -176,7 +221,10 @@ class MainActivity : AppCompatActivity() {
         }
 
         binding.lyricShow.setOnClickListener {
-            LyricBottomSheetFragment(mainActivityViewModel.lyricCurrentTrackLyric.value!!).show(supportFragmentManager,null)
+            LyricBottomSheetFragment(mainActivityViewModel.lyricCurrentTrackLyric.value!!).show(
+                supportFragmentManager,
+                null
+            )
         }
         binding.repeat.setOnClickListener {
             when ((it as RepeatButton).state) {
@@ -200,7 +248,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         binding.moreOptionMain.setOnClickListener {
-            TimeOffDialogFragment().show(supportFragmentManager,null)
+            TimeOffDialogFragment().show(supportFragmentManager, null)
         }
     }
 
@@ -235,6 +283,17 @@ class MainActivity : AppCompatActivity() {
             }
 
             override fun onStateChanged(bottomSheet: View, newState: Int) {
+                val rotateAnimation: Animation = AnimationUtils.loadAnimation(baseContext, R.anim.rotate)
+                if (isRotate) { // repeat
+                    binding.artwork.startAnimation(rotateAnimation)
+                    isRotate = true
+                }
+
+                if (checkPermission()) {
+                    visualizer.setAudioSessionId(mainActivityViewModel.metadata.value!!.getLong("audioSessionId").toInt())
+                }
+
+
                 if (newState == BottomSheetBehavior.STATE_EXPANDED && oldState == BottomSheetBehavior.STATE_COLLAPSED) {
                     val animator = ValueAnimator.ofFloat(0.0f, 1f)
                     animator.duration = 200
@@ -243,6 +302,8 @@ class MainActivity : AppCompatActivity() {
                     }
                     animator.start()
                     oldState = BottomSheetBehavior.STATE_EXPANDED
+
+
                 } else if (newState == BottomSheetBehavior.STATE_COLLAPSED && oldState == BottomSheetBehavior.STATE_EXPANDED) {
                     val animator = ValueAnimator.ofFloat(1.0f, 0f)
                     animator.duration = 200

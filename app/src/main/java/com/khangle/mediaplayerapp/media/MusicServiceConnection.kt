@@ -21,7 +21,7 @@ class MusicServiceConnection(context: Context, serviceComponent: ComponentName) 
     val networkFailure = MutableLiveData<Boolean>()
             .apply { postValue(false) }
     val rootMediaId: String get() = mediaBrowser.root
-
+    var audioSessionId: Int = 0
     val playbackState = MutableLiveData<PlaybackStateCompat>()
             .apply { postValue(EMPTY_PLAYBACK_STATE) }
     val nowPlaying = MutableLiveData<MediaMetadataCompat>()
@@ -102,7 +102,6 @@ class MusicServiceConnection(context: Context, serviceComponent: ComponentName) 
             mediaController = MediaControllerCompat(context, mediaBrowser.sessionToken).apply {
                 registerCallback(MediaControllerCallback())
             }
-
             isConnected.postValue(true)
         }
 
@@ -138,6 +137,7 @@ class MusicServiceConnection(context: Context, serviceComponent: ComponentName) 
                     if (metadata?.description?.mediaId == null) {
                         NOTHING_PLAYING
                     } else {
+                        // get id audio session ra
                         metadata
                     }
             )

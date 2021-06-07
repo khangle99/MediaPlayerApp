@@ -57,7 +57,7 @@ data class TrackListRespone(
 * */
 
 
-fun MediaMetadataCompat.Builder.from(track: Track): MediaMetadataCompat.Builder {
+fun MediaMetadataCompat.Builder.from(track: Track, audioSessionId1: Int): MediaMetadataCompat.Builder {
    // The duration from the JSON is given in seconds, but the rest of the code works in
    // milliseconds. Here's where we convert to the proper units.
    val durationMs = TimeUnit.SECONDS.toMillis(track.duration)
@@ -79,7 +79,7 @@ fun MediaMetadataCompat.Builder.from(track: Track): MediaMetadataCompat.Builder 
    displaySubtitle = track.artist?.name
    //  displayDescription = track.album
    displayIconUri = track.album?.smalIconUrl
-
+    audioSessionId = audioSessionId1
    // Add downloadStatus to force the creation of an "extras" bundle in the resulting
    // MediaMetadataCompat object. This is needed to send accurate metadata to the
    // media session during updates.

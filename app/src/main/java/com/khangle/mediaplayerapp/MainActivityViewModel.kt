@@ -10,7 +10,6 @@ import com.khangle.mediaplayerapp.data.model.Track
 import com.khangle.mediaplayerapp.data.network.retrofit.DeezerBaseUserService
 import com.khangle.mediaplayerapp.data.network.retrofit.MMBaseWebService
 import com.khangle.mediaplayerapp.extension.artist
-import com.khangle.mediaplayerapp.extension.displaySubtitle
 import com.khangle.mediaplayerapp.extension.title
 import com.khangle.mediaplayerapp.media.IS_CHANGE_PLAYLIST
 import com.khangle.mediaplayerapp.media.MusicServiceConnection

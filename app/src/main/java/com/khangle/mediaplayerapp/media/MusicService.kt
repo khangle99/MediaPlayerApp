@@ -181,6 +181,7 @@ class MusicService : MediaBrowserServiceCompat() {
     }
 
 
+
     // ham load toan bo list vao vao player
     private fun preparePlaylist(
         metadataList: List<MediaMetadataCompat>,
@@ -200,6 +201,7 @@ class MusicService : MediaBrowserServiceCompat() {
     )
     val handler = Handler(Looper.getMainLooper())
     private fun updateCurrentPosition(duration: Long = 3000) {
+
         val currentPosition: Long = currentPlayer.getCurrentPosition()
         if (currentPosition >= 30000) { // do chua co ban quyen
             //    mediaSession.setPlaybackState(playbackStateBuilder.setState(PlaybackStateCompat.STATE_PLAYING, 30000, 0f).build())
@@ -237,7 +239,7 @@ class MusicService : MediaBrowserServiceCompat() {
                 if (isChangePlaylist) { // get lai list metadata tu client
 
                     currentPlaylistItems = extras.getParcelableArrayList<Track>("myKey")!!.map {
-                        metadataBuilder.from(it).build()
+                        metadataBuilder.from(it, currentPlayer.audioComponent!!.audioSessionId).build()
                     }
                     val find = currentPlaylistItems.find { it.id == mediaId }
                     val windowsIndex = currentPlaylistItems.indexOf(find)
@@ -270,8 +272,6 @@ class MusicService : MediaBrowserServiceCompat() {
             exoPlayer.play()
             updateCurrentPosition()
         }
-
-
 
 
         override fun onSeekTo(pos: Long) {

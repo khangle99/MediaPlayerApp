@@ -16,6 +16,7 @@
             android:id="@+id/tab_layout"
             app:tabTextColor="@color/white"
             app:tabRippleColor="@color/grey"
+            app:tabBackground="@color/black"
             app:tabSelectedTextColor="@color/main_color"
             app:tabIndicatorColor="@color/main_color"
             android:layout_width="match_parent"
